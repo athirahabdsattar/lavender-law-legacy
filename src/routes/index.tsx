@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { Award, Briefcase, Scale, ArrowRight, Mail, Linkedin, Twitter } from "lucide-react";
 import heroVisual from "../assets/hero-visual.jpg";
 
@@ -6,17 +7,18 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Alexandra Chen | Lawyer & Entrepreneur" },
-      { name: "description", content: "A lawyer turned entrepreneur. Explore awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
-      { property: "og:title", content: "Alexandra Chen | Lawyer & Entrepreneur" },
-      { property: "og:description", content: "A lawyer turned entrepreneur. Explore awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
+      { title: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
+      { name: "description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
+      { property: "og:title", content: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
+      { property: "og:description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:image", content: heroVisual },
-      { name: "twitter:image", content: heroVisual },
     ],
   }),
 });
+
+const LINKEDIN_URL = "https://www.linkedin.com/in/athirahabdsattar";
+
 
 const navLinks = [
   { label: "About", to: "#about" },
@@ -78,9 +80,60 @@ const journey = [
 
 const pressLogos = ["Forbes", "The Times", "Bloomberg", "Entrepreneur", "Wired"];
 
+function Intro({ onEnter }: { onEnter: () => void }) {
+  const [leaving, setLeaving] = useState(false);
+
+  const enter = () => {
+    setLeaving(true);
+    window.setTimeout(onEnter, 650);
+  };
+
+  return (
+    <div
+      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden gradient-band px-6 text-center ${leaving ? "intro-leaving" : ""}`}
+    >
+      <div className="aurora -top-24 -left-16 h-96 w-96 bg-white/40" />
+      <div className="aurora bottom-0 right-0 h-96 w-96 bg-white/30" />
+      <div className="dot-grid absolute top-16 right-12 hidden h-28 w-28 text-white/40 md:block" />
+      <div className="dot-grid absolute bottom-16 left-12 hidden h-28 w-28 text-white/40 md:block" />
+      <div className="relative">
+        <p className="intro-rise text-xs font-semibold uppercase tracking-[0.4em] text-white/80">
+          Lawyer · Entrepreneur
+        </p>
+        <h1
+          className="intro-rise mt-6 text-balance text-4xl font-extrabold leading-[1.05] text-white sm:text-6xl lg:text-7xl"
+          style={{ animationDelay: "0.15s" }}
+        >
+          ATHIRAH
+          <br />
+          ABDULL SATTAR
+        </h1>
+        <p
+          className="intro-rise mx-auto mt-6 max-w-md text-base text-white/85 sm:text-lg"
+          style={{ animationDelay: "0.3s" }}
+        >
+          Building at the intersection of law, business, and bold ideas.
+        </p>
+        <button
+          type="button"
+          onClick={enter}
+          className="intro-rise mt-10 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-semibold text-primary shadow-2xl shadow-black/20 transition-all hover:-translate-y-0.5"
+          style={{ animationDelay: "0.45s" }}
+        >
+          Enter
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Index() {
+  const [entered, setEntered] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
+      {!entered && <Intro onEnter={() => setEntered(true)} />}
       <Header />
       <main>
         <Hero />
@@ -99,8 +152,9 @@ function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="container-tight flex h-20 items-center justify-between">
         <Link to="/" className="text-xl font-extrabold tracking-tight gradient-text">
-          A. Chen
+          Athirah A. Sattar
         </Link>
+
         <nav className="hidden items-center gap-9 md:flex">
           {navLinks.map((link) => (
             <a
@@ -292,18 +346,18 @@ function Contact() {
           </div>
           <div className="flex flex-col justify-center gap-6">
             <a
-              href="mailto:hello@alexandrachen.example"
+              href="mailto:hello@athirahsattar.com"
               className="group flex items-center gap-4 rounded-2xl border border-primary-foreground/25 bg-primary-foreground/10 p-5 transition-all hover:bg-primary-foreground/20"
             >
               <Mail className="h-6 w-6" />
               <div>
                 <p className="text-sm font-medium text-primary-foreground/70">Email</p>
-                <p className="font-semibold">hello@alexandrachen.example</p>
+                <p className="font-semibold">hello@athirahsattar.com</p>
               </div>
             </a>
             <div className="flex flex-wrap gap-4">
               <a
-                href="https://linkedin.com"
+                href={LINKEDIN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-5 py-2.5 text-sm font-semibold transition-all hover:bg-primary-foreground/20"
@@ -333,10 +387,10 @@ function Footer() {
     <footer className="border-t border-border py-8">
       <div className="container-tight flex flex-col items-center justify-between gap-4 sm:flex-row">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Alexandra Chen. All rights reserved.
+          © {new Date().getFullYear()} Athirah Abd Sattar. All rights reserved.
         </p>
         <div className="flex items-center gap-6">
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
             <Linkedin className="h-5 w-5" />
             <span className="sr-only">LinkedIn</span>
           </a>
