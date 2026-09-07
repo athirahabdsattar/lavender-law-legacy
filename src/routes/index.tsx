@@ -8,9 +8,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Athirah Abd Sattar | Lawyer & Healthcare Startup Builder" },
-      { name: "description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
+      { name: "description", content: "Lawyer turned healthcare startup builder. 7+ years across insurance litigation, legal aid, and co-founding DEGUP through PETRONAS SEEd.Lab." },
       { property: "og:title", content: "Athirah Abd Sattar | Lawyer & Healthcare Startup Builder" },
-      { property: "og:description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
+      { property: "og:description", content: "Lawyer turned healthcare startup builder. 7+ years across insurance litigation, legal aid, and co-founding DEGUP through PETRONAS SEEd.Lab." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
