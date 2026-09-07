@@ -22,63 +22,71 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/athirahabdsattar";
 
 const navLinks = [
   { label: "About", to: "#about" },
-  { label: "Awards", to: "#awards" },
+  { label: "Highlights", to: "#awards" },
   { label: "Journey", to: "#journey" },
   { label: "Contact", to: "#contact" },
 ];
 
 const awards = [
   {
-    year: "2024",
-    title: "Forbes 30 Under 30",
-    category: "Law & Policy",
-    description: "Recognized for building a legal-tech platform that reshapes access to corporate counsel.",
+    year: "RM450,000",
+    title: "Landmark Settlement",
+    category: "Negotiated single-handedly",
+    description: "Secured a RM450,000 settlement plus 10% costs without proceeding to a full trial.",
   },
   {
-    year: "2023",
-    title: "Women in Business Award",
-    category: "Entrepreneurship",
-    description: "Honored by the National Association of Women Business Owners for scaling a mission-driven venture.",
+    year: "2025",
+    title: "PETRONAS SEEd.Lab",
+    category: "Social Entrepreneurship",
+    description: "Selected to build DEGUP through PETRONAS SEEd.Lab, improving access to dialysis care in Malaysia.",
   },
   {
-    year: "2022",
-    title: "Rising Star",
-    category: "Legal Practice",
-    description: "Selected by a leading legal directory for exceptional work in technology transactions and venture finance.",
+    year: "2017",
+    title: "Best Service Program",
+    category: "MMU Melaka Career Fair",
+    description: "Honoured for leading the best service programme at the Multimedia University Melaka Career Fair.",
   },
   {
-    year: "2021",
-    title: "Pro Bono Champion",
-    category: "Public Service",
-    description: "Awarded for founding a clinic that provided free counsel to over 200 early-stage founders.",
+    year: "Pro Bono",
+    title: "Legal Aid Advocate",
+    category: "Criminal Defence",
+    description: "Represented underprivileged clients in criminal matters, advocating for fair bail, remand and sentencing outcomes.",
   },
 ];
 
 const journey = [
   {
     icon: Scale,
-    period: "2016 – 2020",
-    title: "Senior Associate, Technology & Venture Capital",
-    organization: "Morrison & Vale LLP",
-    description: "Advised growth-stage companies on financings, M&A, and regulatory strategy. Closed more than $800M in transactions.",
+    period: "2018 – 2021",
+    title: "Pupil to Legal Assistant",
+    organization: "Messrs Syariful & Wan Zul, Kota Bharu",
+    description: "Ran personal injury and running-down matters from first consultation through trial and settlement — investigations, evidence, drafting, negotiation and court advocacy.",
   },
   {
     icon: Briefcase,
-    period: "2020 – 2022",
-    title: "General Counsel",
-    organization: "Northbridge Labs",
-    description: "Built the legal function from the ground up, led the Series B, and structured international expansion into three markets.",
+    period: "2021 – 2025",
+    title: "Lawyer / Legal Assistant",
+    organization: "Messrs Kenneth William & Associates",
+    description: "Independently managed insurance litigation for Generali, Liberty, Berjaya Sompo, Chubb, Etiqa, RHB, Tokio Marine and Zurich — including a RM450,000 settlement plus 10% costs.",
+  },
+  {
+    icon: Scale,
+    period: "2025",
+    title: "Lawyer / Legal Assistant",
+    organization: "Messrs Zuhaidie Akmal & Co, Kota Bharu",
+    description: "Delivered pro bono and government-compensated legal aid in criminal matters, protecting clients' rights on bail, remand and sentencing.",
   },
   {
     icon: Award,
-    period: "2022 – Present",
-    title: "Founder & CEO",
-    organization: "Lexora",
-    description: "Founded a platform that automates legal operations for startups. Now serving 1,200+ companies across 12 countries.",
+    period: "2025 – Present",
+    title: "Co-Founder · Legal & Clinical Operations",
+    organization: "DEGUP · PETRONAS SEEd.Lab",
+    description: "Building a healthcare technology startup connecting dialysis patients with suitable treatment options and available slots — leading legal and clinical operations while driving customer discovery, provider partnerships and business model validation.",
   },
 ];
 
-const pressLogos = ["Forbes", "The Times", "Bloomberg", "Entrepreneur", "Wired"];
+const pressLogos = ["Generali", "Liberty", "Berjaya Sompo", "Etiqa", "Tokio Marine", "Zurich"];
+
 
 function Intro({ onEnter }: { onEnter: () => void }) {
   const [leaving, setLeaving] = useState(false);
