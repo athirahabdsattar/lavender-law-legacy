@@ -360,18 +360,21 @@ function Contact() {
           <div>
             <h2 className="text-3xl font-extrabold sm:text-4xl">Let’s build something meaningful.</h2>
             <p className="mt-4 max-w-md text-lg leading-relaxed text-primary-foreground/80">
-              Whether you’re a founder seeking counsel, a publication planning a profile, or an organization looking for a speaker, I’d love to hear from you.
+              Whether you’re a healthcare provider, a founder, an investor, or a team looking for legal and operational firepower — I’d love to hear from you.
+            </p>
+            <p className="mt-6 text-sm text-primary-foreground/70">
+              LLB (Hons), Multimedia University · Based in Kuala Lumpur, Malaysia
             </p>
           </div>
           <div className="flex flex-col justify-center gap-6">
             <a
-              href="mailto:hello@athirahsattar.com"
+              href="mailto:athirahlegal@gmail.com"
               className="group flex items-center gap-4 rounded-2xl border border-primary-foreground/25 bg-primary-foreground/10 p-5 transition-all hover:bg-primary-foreground/20"
             >
               <Mail className="h-6 w-6" />
               <div>
                 <p className="text-sm font-medium text-primary-foreground/70">Email</p>
-                <p className="font-semibold">hello@athirahsattar.com</p>
+                <p className="font-semibold">athirahlegal@gmail.com</p>
               </div>
             </a>
             <div className="flex flex-wrap gap-4">
@@ -384,18 +387,10 @@ function Contact() {
                 <Linkedin className="h-4 w-4" />
                 LinkedIn
               </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-5 py-2.5 text-sm font-semibold transition-all hover:bg-primary-foreground/20"
-              >
-                <Twitter className="h-4 w-4" />
-                Twitter
-              </a>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );
