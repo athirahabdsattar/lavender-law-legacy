@@ -194,22 +194,25 @@ function Hero() {
       <div className="aurora bottom-0 left-1/3 h-72 w-72 bg-chart-5/40" />
       <div className="container-tight relative">
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1" id="about">
             <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
-              Lawyer · Entrepreneur · Strategist
+              Lawyer · Startup Builder · Kuala Lumpur
             </p>
             <h1 className="text-balance text-4xl leading-[1.1] font-extrabold text-foreground sm:text-5xl lg:text-6xl">
-              From courtroom counsel to <span className="gradient-text">founder</span>.
+              From litigation lawyer to <span className="gradient-text">healthcare startup builder</span>.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              I built a career interpreting risk for others — then took one myself. Today I run a legal-tech company, advise founders, and champion access to justice.
+              Seven years solving complex problems across law, healthcare and entrepreneurship. Six of them in insurance civil litigation — running-down and personal injury, plaintiff and defendant, from legal opinion to full trial. Today I co-found DEGUP through PETRONAS SEEd.Lab, improving access to dialysis care.
+            </p>
+            <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Law taught me how to think. Startups are teaching me how to build.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <a
                 href="#awards"
                 className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/30 transition-all hover:-translate-y-0.5 hover:bg-primary/90"
               >
-                View recognitions
+                View highlights
                 <ArrowRight className="h-4 w-4" />
               </a>
               <a
@@ -221,19 +224,20 @@ function Hero() {
             </div>
             <div className="mt-12 flex flex-wrap items-center gap-10 border-t border-border pt-8">
               <div>
-                <p className="text-3xl font-extrabold gradient-text">$800M+</p>
-                <p className="text-sm text-muted-foreground">Transactions advised</p>
+                <p className="text-3xl font-extrabold gradient-text">7+</p>
+                <p className="text-sm text-muted-foreground">Years across law & startups</p>
               </div>
               <div>
-                <p className="text-3xl font-extrabold gradient-text">1,200+</p>
-                <p className="text-sm text-muted-foreground">Companies served</p>
+                <p className="text-3xl font-extrabold gradient-text">RM450K</p>
+                <p className="text-sm text-muted-foreground">Settlement negotiated solo</p>
               </div>
               <div>
-                <p className="text-3xl font-extrabold gradient-text">12</p>
-                <p className="text-sm text-muted-foreground">Countries reached</p>
+                <p className="text-3xl font-extrabold gradient-text">8</p>
+                <p className="text-sm text-muted-foreground">Major insurers represented</p>
               </div>
             </div>
           </div>
+
           <div className="relative order-1 lg:order-2">
             <div className="dot-grid absolute -top-6 -right-4 h-24 w-24 text-primary/40" />
             <div className="dot-grid absolute -bottom-6 -left-6 h-24 w-24 text-chart-2/40" />
