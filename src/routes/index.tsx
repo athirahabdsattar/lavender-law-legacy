@@ -1,16 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Award, Briefcase, Scale, ArrowRight, Mail, Linkedin, Twitter } from "lucide-react";
+import { Award, Briefcase, Scale, ArrowRight, Mail, Linkedin } from "lucide-react";
 import heroVisual from "../assets/hero-visual.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
-      { name: "description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
-      { property: "og:title", content: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
-      { property: "og:description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
+      { title: "Athirah Abd Sattar | Lawyer & Healthcare Startup Builder" },
+      { name: "description", content: "Lawyer turned healthcare startup builder. 7+ years across insurance litigation, legal aid, and co-founding DEGUP through PETRONAS SEEd.Lab." },
+      { property: "og:title", content: "Athirah Abd Sattar | Lawyer & Healthcare Startup Builder" },
+      { property: "og:description", content: "Lawyer turned healthcare startup builder. 7+ years across insurance litigation, legal aid, and co-founding DEGUP through PETRONAS SEEd.Lab." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -22,63 +22,71 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/athirahabdsattar";
 
 const navLinks = [
   { label: "About", to: "#about" },
-  { label: "Awards", to: "#awards" },
+  { label: "Highlights", to: "#awards" },
   { label: "Journey", to: "#journey" },
   { label: "Contact", to: "#contact" },
 ];
 
 const awards = [
   {
-    year: "2024",
-    title: "Forbes 30 Under 30",
-    category: "Law & Policy",
-    description: "Recognized for building a legal-tech platform that reshapes access to corporate counsel.",
+    year: "RM450,000",
+    title: "Landmark Settlement",
+    category: "Negotiated single-handedly",
+    description: "Secured a RM450,000 settlement plus 10% costs without proceeding to a full trial.",
   },
   {
-    year: "2023",
-    title: "Women in Business Award",
-    category: "Entrepreneurship",
-    description: "Honored by the National Association of Women Business Owners for scaling a mission-driven venture.",
+    year: "2025",
+    title: "PETRONAS SEEd.Lab",
+    category: "Social Entrepreneurship",
+    description: "Selected to build DEGUP through PETRONAS SEEd.Lab, improving access to dialysis care in Malaysia.",
   },
   {
-    year: "2022",
-    title: "Rising Star",
-    category: "Legal Practice",
-    description: "Selected by a leading legal directory for exceptional work in technology transactions and venture finance.",
+    year: "2017",
+    title: "Best Service Program",
+    category: "MMU Melaka Career Fair",
+    description: "Honoured for leading the best service programme at the Multimedia University Melaka Career Fair.",
   },
   {
-    year: "2021",
-    title: "Pro Bono Champion",
-    category: "Public Service",
-    description: "Awarded for founding a clinic that provided free counsel to over 200 early-stage founders.",
+    year: "Pro Bono",
+    title: "Legal Aid Advocate",
+    category: "Criminal Defence",
+    description: "Represented underprivileged clients in criminal matters, advocating for fair bail, remand and sentencing outcomes.",
   },
 ];
 
 const journey = [
   {
     icon: Scale,
-    period: "2016 – 2020",
-    title: "Senior Associate, Technology & Venture Capital",
-    organization: "Morrison & Vale LLP",
-    description: "Advised growth-stage companies on financings, M&A, and regulatory strategy. Closed more than $800M in transactions.",
+    period: "2018 – 2021",
+    title: "Pupil to Legal Assistant",
+    organization: "Messrs Syariful & Wan Zul, Kota Bharu",
+    description: "Ran personal injury and running-down matters from first consultation through trial and settlement — investigations, evidence, drafting, negotiation and court advocacy.",
   },
   {
     icon: Briefcase,
-    period: "2020 – 2022",
-    title: "General Counsel",
-    organization: "Northbridge Labs",
-    description: "Built the legal function from the ground up, led the Series B, and structured international expansion into three markets.",
+    period: "2021 – 2025",
+    title: "Lawyer / Legal Assistant",
+    organization: "Messrs Kenneth William & Associates",
+    description: "Independently managed insurance litigation for Generali, Liberty, Berjaya Sompo, Chubb, Etiqa, RHB, Tokio Marine and Zurich — including a RM450,000 settlement plus 10% costs.",
+  },
+  {
+    icon: Scale,
+    period: "2025",
+    title: "Lawyer / Legal Assistant",
+    organization: "Messrs Zuhaidie Akmal & Co, Kota Bharu",
+    description: "Delivered pro bono and government-compensated legal aid in criminal matters, protecting clients' rights on bail, remand and sentencing.",
   },
   {
     icon: Award,
-    period: "2022 – Present",
-    title: "Founder & CEO",
-    organization: "Lexora",
-    description: "Founded a platform that automates legal operations for startups. Now serving 1,200+ companies across 12 countries.",
+    period: "2025 – Present",
+    title: "Co-Founder · Legal & Clinical Operations",
+    organization: "DEGUP · PETRONAS SEEd.Lab",
+    description: "Building a healthcare technology startup connecting dialysis patients with suitable treatment options and available slots — leading legal and clinical operations while driving customer discovery, provider partnerships and business model validation.",
   },
 ];
 
-const pressLogos = ["Forbes", "The Times", "Bloomberg", "Entrepreneur", "Wired"];
+const pressLogos = ["Generali", "Liberty", "Berjaya Sompo", "Etiqa", "Tokio Marine", "Zurich"];
+
 
 function Intro({ onEnter }: { onEnter: () => void }) {
   const [leaving, setLeaving] = useState(false);
@@ -112,8 +120,9 @@ function Intro({ onEnter }: { onEnter: () => void }) {
           className="intro-rise mx-auto mt-6 max-w-md text-base text-white/85 sm:text-lg"
           style={{ animationDelay: "0.3s" }}
         >
-          Building at the intersection of law, business, and bold ideas.
+          From lawyer to healthcare startup builder. Building DEGUP.
         </p>
+
         <button
           type="button"
           onClick={enter}
@@ -185,22 +194,25 @@ function Hero() {
       <div className="aurora bottom-0 left-1/3 h-72 w-72 bg-chart-5/40" />
       <div className="container-tight relative">
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1" id="about">
             <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
-              Lawyer · Entrepreneur · Strategist
+              Lawyer · Startup Builder · Kuala Lumpur
             </p>
             <h1 className="text-balance text-4xl leading-[1.1] font-extrabold text-foreground sm:text-5xl lg:text-6xl">
-              From courtroom counsel to <span className="gradient-text">founder</span>.
+              From litigation lawyer to <span className="gradient-text">healthcare startup builder</span>.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              I built a career interpreting risk for others — then took one myself. Today I run a legal-tech company, advise founders, and champion access to justice.
+              Seven years solving complex problems across law, healthcare and entrepreneurship. Six of them in insurance civil litigation — running-down and personal injury, plaintiff and defendant, from legal opinion to full trial. Today I co-found DEGUP through PETRONAS SEEd.Lab, improving access to dialysis care.
+            </p>
+            <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Law taught me how to think. Startups are teaching me how to build.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <a
                 href="#awards"
                 className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/30 transition-all hover:-translate-y-0.5 hover:bg-primary/90"
               >
-                View recognitions
+                View highlights
                 <ArrowRight className="h-4 w-4" />
               </a>
               <a
@@ -212,19 +224,20 @@ function Hero() {
             </div>
             <div className="mt-12 flex flex-wrap items-center gap-10 border-t border-border pt-8">
               <div>
-                <p className="text-3xl font-extrabold gradient-text">$800M+</p>
-                <p className="text-sm text-muted-foreground">Transactions advised</p>
+                <p className="text-3xl font-extrabold gradient-text">7+</p>
+                <p className="text-sm text-muted-foreground">Years across law & startups</p>
               </div>
               <div>
-                <p className="text-3xl font-extrabold gradient-text">1,200+</p>
-                <p className="text-sm text-muted-foreground">Companies served</p>
+                <p className="text-3xl font-extrabold gradient-text">RM450K</p>
+                <p className="text-sm text-muted-foreground">Settlement negotiated solo</p>
               </div>
               <div>
-                <p className="text-3xl font-extrabold gradient-text">12</p>
-                <p className="text-sm text-muted-foreground">Countries reached</p>
+                <p className="text-3xl font-extrabold gradient-text">8</p>
+                <p className="text-sm text-muted-foreground">Major insurers represented</p>
               </div>
             </div>
           </div>
+
           <div className="relative order-1 lg:order-2">
             <div className="dot-grid absolute -top-6 -right-4 h-24 w-24 text-primary/40" />
             <div className="dot-grid absolute -bottom-6 -left-6 h-24 w-24 text-chart-2/40" />
@@ -245,15 +258,20 @@ function Hero() {
 function PressBand() {
   return (
     <section className="gradient-band py-7">
-      <div className="container-tight flex flex-wrap items-center justify-center gap-x-12 gap-y-4 md:justify-between">
-        {pressLogos.map((logo) => (
-          <span
-            key={logo}
-            className="text-lg font-semibold tracking-wide text-primary-foreground/90"
-          >
-            {logo}
-          </span>
-        ))}
+      <div className="container-tight">
+        <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.3em] text-primary-foreground/70">
+          Insurers represented in litigation
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 md:justify-between">
+          {pressLogos.map((logo) => (
+            <span
+              key={logo}
+              className="text-lg font-semibold tracking-wide text-primary-foreground/90"
+            >
+              {logo}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -264,14 +282,15 @@ function Awards() {
     <section id="awards" className="section-padding relative overflow-hidden bg-secondary/40">
       <div className="container-tight relative">
         <div className="mb-12 max-w-2xl text-center md:mx-auto">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Awards & Recognition</p>
+          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Highlights & Recognition</p>
           <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
             Milestones that mark the path.
           </h2>
           <p className="mt-4 text-muted-foreground">
-            A selection of honors from legal practice, entrepreneurship, and public service.
+            Wins from the courtroom, the startup floor, and the community.
           </p>
         </div>
+
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {awards.map((award) => (
             <article
@@ -341,18 +360,21 @@ function Contact() {
           <div>
             <h2 className="text-3xl font-extrabold sm:text-4xl">Let’s build something meaningful.</h2>
             <p className="mt-4 max-w-md text-lg leading-relaxed text-primary-foreground/80">
-              Whether you’re a founder seeking counsel, a publication planning a profile, or an organization looking for a speaker, I’d love to hear from you.
+              Whether you’re a healthcare provider, a founder, an investor, or a team looking for legal and operational firepower — I’d love to hear from you.
+            </p>
+            <p className="mt-6 text-sm text-primary-foreground/70">
+              LLB (Hons), Multimedia University · Based in Kuala Lumpur, Malaysia
             </p>
           </div>
           <div className="flex flex-col justify-center gap-6">
             <a
-              href="mailto:hello@athirahsattar.com"
+              href="mailto:athirahlegal@gmail.com"
               className="group flex items-center gap-4 rounded-2xl border border-primary-foreground/25 bg-primary-foreground/10 p-5 transition-all hover:bg-primary-foreground/20"
             >
               <Mail className="h-6 w-6" />
               <div>
                 <p className="text-sm font-medium text-primary-foreground/70">Email</p>
-                <p className="font-semibold">hello@athirahsattar.com</p>
+                <p className="font-semibold">athirahlegal@gmail.com</p>
               </div>
             </a>
             <div className="flex flex-wrap gap-4">
@@ -365,18 +387,10 @@ function Contact() {
                 <Linkedin className="h-4 w-4" />
                 LinkedIn
               </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-5 py-2.5 text-sm font-semibold transition-all hover:bg-primary-foreground/20"
-              >
-                <Twitter className="h-4 w-4" />
-                Twitter
-              </a>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );
@@ -394,10 +408,11 @@ function Footer() {
             <Linkedin className="h-5 w-5" />
             <span className="sr-only">LinkedIn</span>
           </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
-            <Twitter className="h-5 w-5" />
-            <span className="sr-only">Twitter</span>
+          <a href="mailto:athirahlegal@gmail.com" className="text-muted-foreground hover:text-foreground">
+            <Mail className="h-5 w-5" />
+            <span className="sr-only">Email</span>
           </a>
+
         </div>
       </div>
     </footer>
