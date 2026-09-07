@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { Award, Briefcase, Scale, ArrowRight, Mail, Linkedin, Twitter } from "lucide-react";
 import heroVisual from "../assets/hero-visual.jpg";
 
@@ -6,17 +7,18 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Alexandra Chen | Lawyer & Entrepreneur" },
-      { name: "description", content: "A lawyer turned entrepreneur. Explore awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
-      { property: "og:title", content: "Alexandra Chen | Lawyer & Entrepreneur" },
-      { property: "og:description", content: "A lawyer turned entrepreneur. Explore awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
+      { title: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
+      { name: "description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
+      { property: "og:title", content: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
+      { property: "og:description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:image", content: heroVisual },
-      { name: "twitter:image", content: heroVisual },
     ],
   }),
 });
+
+const LINKEDIN_URL = "https://www.linkedin.com/in/athirahabdsattar";
+
 
 const navLinks = [
   { label: "About", to: "#about" },
