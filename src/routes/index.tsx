@@ -248,7 +248,7 @@ function Journey() {
       <div className="container-tight">
         <div className="mb-16 max-w-2xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">The Journey</p>
-          <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
+          <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
             Law was the foundation. Entrepreneurship is the frontier.
           </h2>
         </div>
@@ -261,8 +261,8 @@ function Journey() {
                   <span className="text-sm font-semibold text-muted-foreground">{step.period}</span>
                   <span className="h-3 w-3 rounded-full bg-primary ring-4 ring-background" />
                 </div>
-                <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
-                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+                <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 sm:p-8">
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <step.icon className="h-5 w-5" />
                   </div>
                   <span className="mb-2 block text-sm font-semibold text-primary lg:hidden">{step.period}</span>
@@ -281,11 +281,11 @@ function Journey() {
 
 function Contact() {
   return (
-    <section id="contact" className="section-padding bg-primary text-primary-foreground">
+    <section id="contact" className="section-padding gradient-band text-primary-foreground">
       <div className="container-tight">
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
-            <h2 className="text-3xl font-bold sm:text-4xl">Let’s build something meaningful.</h2>
+            <h2 className="text-3xl font-extrabold sm:text-4xl">Let’s build something meaningful.</h2>
             <p className="mt-4 max-w-md text-lg leading-relaxed text-primary-foreground/80">
               Whether you’re a founder seeking counsel, a publication planning a profile, or an organization looking for a speaker, I’d love to hear from you.
             </p>
@@ -293,7 +293,7 @@ function Contact() {
           <div className="flex flex-col justify-center gap-6">
             <a
               href="mailto:hello@alexandrachen.example"
-              className="group flex items-center gap-4 rounded-2xl border border-primary-foreground/20 bg-primary-foreground/10 p-5 transition-all hover:bg-primary-foreground/20"
+              className="group flex items-center gap-4 rounded-2xl border border-primary-foreground/25 bg-primary-foreground/10 p-5 transition-all hover:bg-primary-foreground/20"
             >
               <Mail className="h-6 w-6" />
               <div>
