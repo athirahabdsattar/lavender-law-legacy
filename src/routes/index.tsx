@@ -120,8 +120,9 @@ function Intro({ onEnter }: { onEnter: () => void }) {
           className="intro-rise mx-auto mt-6 max-w-md text-base text-white/85 sm:text-lg"
           style={{ animationDelay: "0.3s" }}
         >
-          Building at the intersection of law, business, and bold ideas.
+          From lawyer to healthcare startup builder. Building DEGUP.
         </p>
+
         <button
           type="button"
           onClick={enter}
