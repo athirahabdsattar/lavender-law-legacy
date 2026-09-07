@@ -7,9 +7,9 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
+      { title: "Athirah Abd Sattar | Lawyer & Healthcare Startup Builder" },
       { name: "description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
-      { property: "og:title", content: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
+      { property: "og:title", content: "Athirah Abd Sattar | Lawyer & Healthcare Startup Builder" },
       { property: "og:description", content: "Athirah Abd Sattar — a lawyer turned entrepreneur. Awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
