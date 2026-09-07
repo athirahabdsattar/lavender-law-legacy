@@ -76,12 +76,15 @@ const journey = [
   },
 ];
 
+const pressLogos = ["Forbes", "The Times", "Bloomberg", "Entrepreneur", "Wired"];
+
 function Index() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
         <Hero />
+        <PressBand />
         <Awards />
         <Journey />
         <Contact />
@@ -93,17 +96,17 @@ function Index() {
 
 function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
-      <div className="container-tight flex h-16 items-center justify-between">
-        <Link to="/" className="font-heading text-lg font-bold text-foreground">
+    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
+      <div className="container-tight flex h-20 items-center justify-between">
+        <Link to="/" className="text-xl font-extrabold tracking-tight gradient-text">
           A. Chen
         </Link>
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-9 md:flex">
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.to}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
               {link.label}
             </a>
@@ -111,7 +114,7 @@ function Header() {
         </nav>
         <a
           href="#contact"
-          className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
+          className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:bg-primary/90"
         >
           Get in touch
         </a>
@@ -122,15 +125,18 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="section-padding overflow-hidden">
-      <div className="container-tight">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+    <section className="relative overflow-hidden section-padding">
+      <div className="aurora -top-24 -left-20 h-80 w-80 bg-primary/40" />
+      <div className="aurora top-10 right-0 h-96 w-96 bg-chart-2/35" />
+      <div className="aurora bottom-0 left-1/3 h-72 w-72 bg-chart-5/40" />
+      <div className="container-tight relative">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="order-2 lg:order-1">
             <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
               Lawyer · Entrepreneur · Strategist
             </p>
-            <h1 className="text-balance text-4xl leading-tight font-bold text-foreground sm:text-5xl lg:text-6xl">
-              From courtroom counsel to <span className="text-primary">founder</span>.
+            <h1 className="text-balance text-4xl leading-[1.1] font-extrabold text-foreground sm:text-5xl lg:text-6xl">
+              From courtroom counsel to <span className="gradient-text">founder</span>.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
               I built a career interpreting risk for others — then took one myself. Today I run a legal-tech company, advise founders, and champion access to justice.
@@ -138,41 +144,42 @@ function Hero() {
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <a
                 href="#awards"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/30 transition-all hover:-translate-y-0.5 hover:bg-primary/90"
               >
                 View recognitions
                 <ArrowRight className="h-4 w-4" />
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold text-foreground transition-all hover:bg-accent"
+                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-7 py-3.5 text-sm font-semibold text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/40"
               >
                 Work with me
               </a>
             </div>
-            <div className="mt-12 flex items-center gap-8 border-t border-border pt-8">
+            <div className="mt-12 flex flex-wrap items-center gap-10 border-t border-border pt-8">
               <div>
-                <p className="text-3xl font-bold text-foreground">$800M+</p>
+                <p className="text-3xl font-extrabold gradient-text">$800M+</p>
                 <p className="text-sm text-muted-foreground">Transactions advised</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-foreground">1,200+</p>
+                <p className="text-3xl font-extrabold gradient-text">1,200+</p>
                 <p className="text-sm text-muted-foreground">Companies served</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-foreground">12</p>
+                <p className="text-3xl font-extrabold gradient-text">12</p>
                 <p className="text-sm text-muted-foreground">Countries reached</p>
               </div>
             </div>
           </div>
-          <div className="order-1 lg:order-2">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-accent shadow-2xl shadow-primary/10 lg:aspect-square">
+          <div className="relative order-1 lg:order-2">
+            <div className="dot-grid absolute -top-6 -right-4 h-24 w-24 text-primary/40" />
+            <div className="dot-grid absolute -bottom-6 -left-6 h-24 w-24 text-chart-2/40" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-accent shadow-2xl shadow-primary/20 lg:aspect-square">
               <img
                 src={heroVisual}
                 alt="Abstract visual representing law, entrepreneurship, and innovation in soft purple and white tones"
                 className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
             </div>
           </div>
         </div>
@@ -181,13 +188,30 @@ function Hero() {
   );
 }
 
+function PressBand() {
+  return (
+    <section className="gradient-band py-7">
+      <div className="container-tight flex flex-wrap items-center justify-center gap-x-12 gap-y-4 md:justify-between">
+        {pressLogos.map((logo) => (
+          <span
+            key={logo}
+            className="text-lg font-semibold tracking-wide text-primary-foreground/90"
+          >
+            {logo}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Awards() {
   return (
-    <section id="awards" className="section-padding bg-secondary/50">
-      <div className="container-tight">
-        <div className="mb-12 max-w-2xl">
+    <section id="awards" className="section-padding relative overflow-hidden bg-secondary/40">
+      <div className="container-tight relative">
+        <div className="mb-12 max-w-2xl text-center md:mx-auto">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Awards & Recognition</p>
-          <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
+          <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
             Milestones that mark the path.
           </h2>
           <p className="mt-4 text-muted-foreground">
@@ -198,9 +222,10 @@ function Awards() {
           {awards.map((award) => (
             <article
               key={award.title}
-              className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10"
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-all hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/15"
             >
-              <span className="mb-4 inline-flex w-fit rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
+              <div className="gradient-band absolute inset-x-0 top-0 h-1.5" />
+              <span className="mt-2 mb-4 inline-flex w-fit rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
                 {award.year}
               </span>
               <h3 className="text-lg font-bold text-card-foreground">{award.title}</h3>
@@ -215,6 +240,7 @@ function Awards() {
     </section>
   );
 }
+
 
 function Journey() {
   return (
