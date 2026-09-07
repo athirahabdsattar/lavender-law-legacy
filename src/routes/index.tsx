@@ -346,18 +346,18 @@ function Contact() {
           </div>
           <div className="flex flex-col justify-center gap-6">
             <a
-              href="mailto:hello@alexandrachen.example"
+              href="mailto:hello@athirahsattar.com"
               className="group flex items-center gap-4 rounded-2xl border border-primary-foreground/25 bg-primary-foreground/10 p-5 transition-all hover:bg-primary-foreground/20"
             >
               <Mail className="h-6 w-6" />
               <div>
                 <p className="text-sm font-medium text-primary-foreground/70">Email</p>
-                <p className="font-semibold">hello@alexandrachen.example</p>
+                <p className="font-semibold">hello@athirahsattar.com</p>
               </div>
             </a>
             <div className="flex flex-wrap gap-4">
               <a
-                href="https://linkedin.com"
+                href={LINKEDIN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-5 py-2.5 text-sm font-semibold transition-all hover:bg-primary-foreground/20"
@@ -387,10 +387,10 @@ function Footer() {
     <footer className="border-t border-border py-8">
       <div className="container-tight flex flex-col items-center justify-between gap-4 sm:flex-row">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Alexandra Chen. All rights reserved.
+          © {new Date().getFullYear()} Athirah Abd Sattar. All rights reserved.
         </p>
         <div className="flex items-center gap-6">
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
             <Linkedin className="h-5 w-5" />
             <span className="sr-only">LinkedIn</span>
           </a>

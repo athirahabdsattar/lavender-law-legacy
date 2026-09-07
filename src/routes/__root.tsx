@@ -77,10 +77,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Alexandra Chen | Lawyer & Entrepreneur" },
+      { title: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
       { name: "description", content: "A lawyer turned entrepreneur. Explore awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
-      { name: "author", content: "Alexandra Chen" },
-      { property: "og:title", content: "Alexandra Chen | Lawyer & Entrepreneur" },
+      { name: "author", content: "Athirah Abd Sattar" },
+      { property: "og:title", content: "Athirah Abd Sattar | Lawyer & Entrepreneur" },
       { property: "og:description", content: "A lawyer turned entrepreneur. Explore awards, recognitions, and a career built at the intersection of law, strategy, and innovation." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
