@@ -80,9 +80,60 @@ const journey = [
 
 const pressLogos = ["Forbes", "The Times", "Bloomberg", "Entrepreneur", "Wired"];
 
+function Intro({ onEnter }: { onEnter: () => void }) {
+  const [leaving, setLeaving] = useState(false);
+
+  const enter = () => {
+    setLeaving(true);
+    window.setTimeout(onEnter, 650);
+  };
+
+  return (
+    <div
+      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden gradient-band px-6 text-center ${leaving ? "intro-leaving" : ""}`}
+    >
+      <div className="aurora -top-24 -left-16 h-96 w-96 bg-white/40" />
+      <div className="aurora bottom-0 right-0 h-96 w-96 bg-white/30" />
+      <div className="dot-grid absolute top-16 right-12 hidden h-28 w-28 text-white/40 md:block" />
+      <div className="dot-grid absolute bottom-16 left-12 hidden h-28 w-28 text-white/40 md:block" />
+      <div className="relative">
+        <p className="intro-rise text-xs font-semibold uppercase tracking-[0.4em] text-white/80">
+          Lawyer · Entrepreneur
+        </p>
+        <h1
+          className="intro-rise mt-6 text-balance text-4xl font-extrabold leading-[1.05] text-white sm:text-6xl lg:text-7xl"
+          style={{ animationDelay: "0.15s" }}
+        >
+          ATHIRAH
+          <br />
+          ABDULL SATTAR
+        </h1>
+        <p
+          className="intro-rise mx-auto mt-6 max-w-md text-base text-white/85 sm:text-lg"
+          style={{ animationDelay: "0.3s" }}
+        >
+          Building at the intersection of law, business, and bold ideas.
+        </p>
+        <button
+          type="button"
+          onClick={enter}
+          className="intro-rise mt-10 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-semibold text-primary shadow-2xl shadow-black/20 transition-all hover:-translate-y-0.5"
+          style={{ animationDelay: "0.45s" }}
+        >
+          Enter
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Index() {
+  const [entered, setEntered] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
+      {!entered && <Intro onEnter={() => setEntered(true)} />}
       <Header />
       <main>
         <Hero />
@@ -101,8 +152,9 @@ function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="container-tight flex h-20 items-center justify-between">
         <Link to="/" className="text-xl font-extrabold tracking-tight gradient-text">
-          A. Chen
+          Athirah A. Sattar
         </Link>
+
         <nav className="hidden items-center gap-9 md:flex">
           {navLinks.map((link) => (
             <a
