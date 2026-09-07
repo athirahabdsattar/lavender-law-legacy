@@ -408,10 +408,11 @@ function Footer() {
             <Linkedin className="h-5 w-5" />
             <span className="sr-only">LinkedIn</span>
           </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
-            <Twitter className="h-5 w-5" />
-            <span className="sr-only">Twitter</span>
+          <a href="mailto:athirahlegal@gmail.com" className="text-muted-foreground hover:text-foreground">
+            <Mail className="h-5 w-5" />
+            <span className="sr-only">Email</span>
           </a>
+
         </div>
       </div>
     </footer>
