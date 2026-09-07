@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Award, Briefcase, Scale, ArrowRight, Mail, Linkedin, Twitter } from "lucide-react";
+import { Award, Briefcase, Scale, ArrowRight, Mail, Linkedin } from "lucide-react";
 import heroVisual from "../assets/hero-visual.jpg";
 
 export const Route = createFileRoute("/")({
