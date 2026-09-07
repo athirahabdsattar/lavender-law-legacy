@@ -258,15 +258,20 @@ function Hero() {
 function PressBand() {
   return (
     <section className="gradient-band py-7">
-      <div className="container-tight flex flex-wrap items-center justify-center gap-x-12 gap-y-4 md:justify-between">
-        {pressLogos.map((logo) => (
-          <span
-            key={logo}
-            className="text-lg font-semibold tracking-wide text-primary-foreground/90"
-          >
-            {logo}
-          </span>
-        ))}
+      <div className="container-tight">
+        <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.3em] text-primary-foreground/70">
+          Insurers represented in litigation
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 md:justify-between">
+          {pressLogos.map((logo) => (
+            <span
+              key={logo}
+              className="text-lg font-semibold tracking-wide text-primary-foreground/90"
+            >
+              {logo}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -277,14 +282,15 @@ function Awards() {
     <section id="awards" className="section-padding relative overflow-hidden bg-secondary/40">
       <div className="container-tight relative">
         <div className="mb-12 max-w-2xl text-center md:mx-auto">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Awards & Recognition</p>
+          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Highlights & Recognition</p>
           <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
             Milestones that mark the path.
           </h2>
           <p className="mt-4 text-muted-foreground">
-            A selection of honors from legal practice, entrepreneurship, and public service.
+            Wins from the courtroom, the startup floor, and the community.
           </p>
         </div>
+
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {awards.map((award) => (
             <article
