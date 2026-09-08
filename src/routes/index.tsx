@@ -606,7 +606,125 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
+function Credentials() {
+  return (
+    <section id="credentials" className="section-padding relative overflow-hidden">
+      <div className="aurora -top-16 right-0 h-72 w-72 bg-primary/30" />
+      <div className="dot-grid absolute bottom-10 left-10 hidden h-28 w-28 text-primary/30 md:block" />
+      <div className="container-tight relative">
+        <Reveal>
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              Qualifications & Skills
+            </p>
+            <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
+              The foundation behind the work.
+            </h2>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {credentials.map((c, i) => (
+            <Reveal key={c.title} delay={i * 100}>
+              <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
+                <GraduationCap className="mb-4 h-6 w-6 text-primary" />
+                <h3 className="text-lg font-bold text-card-foreground">{c.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{c.detail}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {skillGroups.map((group, i) => (
+            <Reveal key={group.title} delay={i * 100}>
+              <div className="h-full rounded-2xl border border-border/70 bg-secondary/40 p-6">
+                <h3 className="text-base font-bold text-foreground">{group.title}</h3>
+                <ul className="mt-4 space-y-2.5">
+                  {group.items.map((item) => (
+                    <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={150}>
+          <div className="mt-8 rounded-2xl border border-border/70 bg-card p-6">
+            <div className="mb-5 flex items-center gap-3">
+              <Languages className="h-5 w-5 text-primary" />
+              <h3 className="text-base font-bold text-card-foreground">Languages</h3>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {languages.map((l) => (
+                <div key={l.name} className="rounded-xl bg-secondary/50 px-4 py-3">
+                  <p className="font-semibold text-foreground">{l.name}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{l.level}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function Beyond() {
+  return (
+    <section id="beyond" className="section-padding relative overflow-hidden">
+      <div className="aurora bottom-0 left-0 h-80 w-80 bg-chart-2/30" />
+      <div className="container-tight relative grid gap-12 lg:grid-cols-2">
+        <div>
+          <Reveal>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Leadership</p>
+            <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">Leading before practising.</h2>
+          </Reveal>
+          <div className="mt-8 space-y-5 border-l-2 border-primary/20 pl-6">
+            {leadership.map((l, i) => (
+              <Reveal key={l.role} delay={i * 80}>
+                <div className="relative">
+                  <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-primary" />
+                  <p className="text-xs font-bold uppercase tracking-widest text-primary">{l.year}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-foreground">{l.role}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <Reveal>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              Training & Conferences
+            </p>
+            <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">Always in the room, learning.</h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <ul className="mt-8 space-y-3">
+              {training.map((t) => (
+                <li
+                  key={t.name}
+                  className="flex gap-4 rounded-xl border border-border/60 bg-card px-4 py-3 text-sm"
+                >
+                  <span className="font-bold text-primary">{t.year}</span>
+                  <span className="text-muted-foreground">{t.name}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Highlights() {
+
   return (
     <section id="highlights" className="section-padding relative overflow-hidden bg-secondary/40">
       <div className="dot-grid absolute top-10 right-10 hidden h-28 w-28 text-primary/30 md:block" />
