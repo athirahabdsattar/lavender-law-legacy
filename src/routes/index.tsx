@@ -323,7 +323,9 @@ function Header() {
           {[
             { label: "Start", to: "#start" },
             ...chapters.map((c) => ({ label: c.label, to: `#${c.id}` })),
-            { label: "Highlights", to: "#highlights" },
+            { label: "Credentials", to: "#credentials" },
+            { label: "Awards", to: "#highlights" },
+
           ].map((link) => (
             <a
               key={link.label}
