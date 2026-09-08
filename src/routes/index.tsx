@@ -427,18 +427,19 @@ function Opening() {
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-10 border-t border-border pt-8">
           <div>
-            <p className="text-3xl font-extrabold gradient-text">7+</p>
-            <p className="text-sm text-muted-foreground">Years across law & startups</p>
+            <p className="text-3xl font-extrabold gradient-text">2019</p>
+            <p className="text-sm text-muted-foreground">Admitted to the Malaysian Bar</p>
           </div>
           <div>
-            <p className="text-3xl font-extrabold gradient-text">RM450K</p>
-            <p className="text-sm text-muted-foreground">Settlement negotiated solo</p>
-          </div>
-          <div>
-            <p className="text-3xl font-extrabold gradient-text">8</p>
+            <p className="text-3xl font-extrabold gradient-text">9</p>
             <p className="text-sm text-muted-foreground">Major insurers represented</p>
           </div>
+          <div>
+            <p className="text-3xl font-extrabold gradient-text">6</p>
+            <p className="text-sm text-muted-foreground">Awards & recognitions</p>
+          </div>
         </div>
+
 
         <a
           href={`#${chapters[0]!.id}`}
