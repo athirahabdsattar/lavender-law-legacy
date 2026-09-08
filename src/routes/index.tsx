@@ -42,24 +42,24 @@ const chapters: Chapter[] = [
     label: "Courtroom",
     image: sceneCourt,
     icon: Scale,
-    period: "2018 – 2021",
-    title: "Pupil to Legal Assistant",
+    period: "May 2019 – Mar 2021",
+    title: "Legal Assistant / Lawyer",
     organization: "Messrs Syariful & Wan Zul, Kota Bharu",
     description:
-      "Where it began. Personal injury and running-down matters carried from first consultation all the way to trial — investigations, evidence, drafting, negotiation and court advocacy.",
-    facts: ["First trial advocacy", "End-to-end file ownership", "Kota Bharu courts"],
+      "Where it began. Personal injury and running-down matters on the plaintiff's side, alongside criminal and civil litigation and conveyancing — investigations, evidence gathering with medical experts, drafting, negotiation and court advocacy.",
+    facts: ["Plaintiff personal injury", "Criminal, civil & conveyancing", "Admitted to the Bar 16.04.2019"],
   },
   {
     id: "litigation",
     label: "Litigation",
     image: sceneOffice,
     icon: Briefcase,
-    period: "2021 – 2025",
-    title: "Lawyer / Legal Assistant",
-    organization: "Messrs Kenneth William & Associates",
+    period: "Apr 2021 – Jan 2025",
+    title: "Legal Assistant / Lawyer",
+    organization: "Messrs Kenneth William & Associates, Kota Bharu",
     description:
-      "Four years of insurance civil litigation, run independently for eight major insurers — plaintiff and defendant, legal opinion to full trial. The high point: a RM450,000 settlement plus 10% costs, negotiated single-handedly without a full trial.",
-    facts: ["RM450,000 settlement", "8 insurers represented", "Solo file management"],
+      "Nearly four years of insurance defence work in personal injury and running-down claims, run independently for nine major insurers — from investigation and legal opinion to strategic negotiation and full trial. Settlements approaching half a million ringgit, secured single-handedly.",
+    facts: ["Defendant's insurance work", "9 insurers represented", "Solo file management"],
     dark: true,
   },
   {
@@ -67,52 +67,143 @@ const chapters: Chapter[] = [
     label: "Legal aid",
     image: sceneClinic,
     icon: HeartPulse,
-    period: "2025",
-    title: "Lawyer / Legal Assistant",
-    organization: "Messrs Zuhaidie Akmal & Co, Kota Bharu",
+    period: "May 2025 – Dec 2025",
+    title: "Legal Assistant / Lawyer",
+    organization: "Messrs Zuhaidie Akmal & Co · YBGK legal aid",
     description:
-      "Pro bono and government-compensated legal aid in criminal matters — protecting the rights of underprivileged clients on bail, remand and sentencing. The work that turned law into service.",
-    facts: ["Criminal defence", "Bail & remand advocacy", "Pro bono practice"],
+      "Pro bono and government-compensated criminal legal aid under Yayasan Bantuan Guaman Kebangsaan — mitigating bail conditions and sentences, opposing remand applications and carrying a substantial caseload for underprivileged clients.",
+    facts: ["Criminal defence", "Bail, remand & mitigation", "YBGK Part I & II certified"],
   },
   {
     id: "degup",
     label: "DEGUP",
     image: sceneLab,
     icon: Award,
-    period: "2025 – Present",
-    title: "Co-Founder · Legal & Clinical Operations",
-    organization: "DEGUP · PETRONAS SEEd.Lab",
+    period: "Nov 2025 – Present",
+    title: "Co-Founder, Degup PLT",
+    organization: "SEEd.Lab · powered by PETRONAS & TCS",
     description:
-      "Building a healthcare technology startup that connects dialysis patients with suitable treatment options and available slots — leading legal and clinical operations while driving customer discovery, provider partnerships and business model validation.",
-    facts: ["PETRONAS SEEd.Lab", "Dialysis access", "Customer discovery"],
+      "Leading a patient-centric healthcare navigation platform that improves access to dialysis and related support services — engaging dialysis centres, stakeholders and patients, designing referral and slot-discovery workflows, and driving research, partnerships and community engagement.",
+    facts: ["Dialysis access platform", "Provider partnerships", "Ops & referral workflows"],
     dark: true,
   },
 ];
 
 const highlights = [
   {
-    tag: "RM450,000",
-    title: "Landmark Settlement",
-    description: "Negotiated single-handedly, plus 10% costs, without proceeding to a full trial.",
+    tag: "2018",
+    title: "1st Place, Techstars Startup Weekend",
+    description: "Winner at Techstars Startup Weekend Kota Bharu — the first taste of building ventures.",
   },
   {
-    tag: "2025",
-    title: "PETRONAS SEEd.Lab",
-    description: "Selected to build DEGUP, improving access to dialysis care in Malaysia.",
+    tag: "2018",
+    title: "2nd Runner-Up, Business Pitching",
+    description: "Kelantan Transit Tour at the Beehive International Social Innovation Conference, UMK Kota Bharu.",
+  },
+  {
+    tag: "2018",
+    title: "Activism Award",
+    description: "Awarded by Persatuan Belia Harmoni Bandaraya Melaka for community activism.",
   },
   {
     tag: "2017",
-    title: "Best Service Program",
-    description: "Honoured for leading the best service programme at the MMU Melaka Career Fair.",
+    title: "Best Service Program Award",
+    description: "MMU Awards recognition as Director of the MMU Melaka Career Fair 2017.",
   },
   {
-    tag: "Pro Bono",
-    title: "Legal Aid Advocate",
-    description: "Represented underprivileged clients in criminal matters across bail, remand and sentencing.",
+    tag: "2016",
+    title: "Compassionate Leader Award",
+    description: "Presented by the Students' College Committee, MMU Melaka.",
+  },
+  {
+    tag: "2015",
+    title: "Female Outstanding Performance",
+    description: "Committee award at the MMU Melaka Career Fair.",
   },
 ];
 
-const insurers = ["Generali", "Liberty", "Berjaya Sompo", "Chubb", "Etiqa", "RHB", "Tokio Marine", "Zurich"];
+const credentials = [
+  {
+    title: "Bachelor of Law (LLB)",
+    detail: "Multimedia University (MMU), Malaysia · 2018",
+  },
+  {
+    title: "Advocate & Solicitor",
+    detail: "Admitted to the High Court of Malaya · 16 April 2019",
+  },
+  {
+    title: "YBGK Legal Aid Certified",
+    detail: "Passed Part I & Part II assessments · 2021",
+  },
+];
+
+const skillGroups = [
+  {
+    title: "Legal expertise",
+    items: [
+      "Legal research, litigation & dispute resolution",
+      "Personal injury and running-down claims",
+      "Criminal & civil litigation, conveyancing",
+    ],
+  },
+  {
+    title: "Communication",
+    items: [
+      "Excellent written and verbal communication",
+      "Explaining complex legal concepts clearly",
+      "Client, stakeholder and community engagement",
+    ],
+  },
+  {
+    title: "Adaptability & innovation",
+    items: [
+      "Tailored legal strategies for unique cases",
+      "Innovative problem solving under pressure",
+      "Market research and ecosystem mapping",
+    ],
+  },
+];
+
+const languages = [
+  { name: "Malay", level: "A in SPM 2011" },
+  { name: "English", level: "MUET Band 4 (Good User)" },
+  { name: "Japanese", level: "Certified Beginner, Japan Foundation KL" },
+  { name: "Mandarin", level: "MMU language course, 2013/2014" },
+];
+
+const leadership = [
+  { year: "2013", role: "Student Welfare Division, MMU Melaka Students' Representative Council" },
+  { year: "2014", role: "Director, MMU Melaka March Intake Orientation Programme" },
+  { year: "2014", role: "President, Students' College Committee (MMU Melaka Hostel)" },
+  { year: "2017", role: "Director, Multimedia University Melaka Career Fair 2017" },
+];
+
+const training = [
+  { year: "2009", name: "Certified First Aider, St. John Ambulans Malaysia" },
+  { year: "2010", name: "Kursus Membina Laman Web & E-Commerce, DPMM" },
+  { year: "2012", name: "Training of Facilitator, MMU University Peer Group" },
+  { year: "2013", name: "7th Malaysian Student Leaders Summit, UK Education Centre" },
+  { year: "2013", name: "Student Leadership Symposium, EYE Project" },
+  { year: "2014", name: "Youth Exchange Programme Malaysia–Brunei, KBS" },
+  { year: "2015", name: "6th University Scholars Leadership Symposium, Hong Kong" },
+  { year: "2017", name: "YSEALI Workshop, Hanoi, Vietnam" },
+  { year: "2017", name: "Personal Data Protection Act Seminar, KKMM" },
+  { year: "2018", name: "Criminal Trial Advocacy Workshop, MMU Melaka" },
+  { year: "2018", name: "Civil Advocacy Course, Bar Council Malaysia" },
+];
+
+const insurers = [
+  "Generali",
+  "Liberty",
+  "Berjaya Sompo",
+  "Chubb",
+  "Etiqa Takaful",
+  "Etiqa General",
+  "RHB",
+  "Tokio Marine",
+  "Zurich",
+];
+
 
 /** Returns 0 → 1 progress of an element travelling through the viewport. */
 function useSceneProgress<T extends HTMLElement>() {
@@ -161,8 +252,11 @@ function Index() {
         {chapters.map((chapter, i) => (
           <ChapterScene key={chapter.id} chapter={chapter} index={i} />
         ))}
+        <Credentials />
         <Highlights />
+        <Beyond />
         <Contact />
+
       </main>
       <Footer />
     </div>
@@ -229,7 +323,9 @@ function Header() {
           {[
             { label: "Start", to: "#start" },
             ...chapters.map((c) => ({ label: c.label, to: `#${c.id}` })),
-            { label: "Highlights", to: "#highlights" },
+            { label: "Credentials", to: "#credentials" },
+            { label: "Awards", to: "#highlights" },
+
           ].map((link) => (
             <a
               key={link.label}
@@ -255,7 +351,7 @@ function ChapterRail() {
   const [active, setActive] = useState("start");
 
   useEffect(() => {
-    const ids = ["start", ...chapters.map((c) => c.id), "highlights", "contact"];
+    const ids = ["start", ...chapters.map((c) => c.id), "credentials", "highlights", "beyond", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -274,7 +370,10 @@ function ChapterRail() {
   const points = [
     { id: "start", label: "Start" },
     ...chapters.map((c) => ({ id: c.id, label: c.label })),
-    { id: "highlights", label: "Highlights" },
+    { id: "credentials", label: "Credentials" },
+    { id: "highlights", label: "Awards" },
+    { id: "beyond", label: "Beyond" },
+
     { id: "contact", label: "Contact" },
   ];
 
@@ -318,9 +417,9 @@ function Opening() {
           From litigation lawyer to <span className="gradient-text">healthcare startup builder</span>.
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          Seven years solving complex problems across law, healthcare and entrepreneurship. Six of them in
-          insurance civil litigation. Today I co-found DEGUP through PETRONAS SEEd.Lab, improving access to
-          dialysis care.
+          Called to the Malaysian Bar in 2019, with six years in personal injury and insurance litigation and
+          criminal legal aid. Today I co-found Degup through SEEd.Lab — powered by PETRONAS and TCS — improving
+          access to dialysis care.
         </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
           Law taught me how to think. Startups are teaching me how to build.
@@ -328,18 +427,19 @@ function Opening() {
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-10 border-t border-border pt-8">
           <div>
-            <p className="text-3xl font-extrabold gradient-text">7+</p>
-            <p className="text-sm text-muted-foreground">Years across law & startups</p>
+            <p className="text-3xl font-extrabold gradient-text">2019</p>
+            <p className="text-sm text-muted-foreground">Admitted to the Malaysian Bar</p>
           </div>
           <div>
-            <p className="text-3xl font-extrabold gradient-text">RM450K</p>
-            <p className="text-sm text-muted-foreground">Settlement negotiated solo</p>
-          </div>
-          <div>
-            <p className="text-3xl font-extrabold gradient-text">8</p>
+            <p className="text-3xl font-extrabold gradient-text">9</p>
             <p className="text-sm text-muted-foreground">Major insurers represented</p>
           </div>
+          <div>
+            <p className="text-3xl font-extrabold gradient-text">6</p>
+            <p className="text-sm text-muted-foreground">Awards & recognitions</p>
+          </div>
         </div>
+
 
         <a
           href={`#${chapters[0]!.id}`}
@@ -506,7 +606,125 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
+function Credentials() {
+  return (
+    <section id="credentials" className="section-padding relative overflow-hidden">
+      <div className="aurora -top-16 right-0 h-72 w-72 bg-primary/30" />
+      <div className="dot-grid absolute bottom-10 left-10 hidden h-28 w-28 text-primary/30 md:block" />
+      <div className="container-tight relative">
+        <Reveal>
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              Qualifications & Skills
+            </p>
+            <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
+              The foundation behind the work.
+            </h2>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {credentials.map((c, i) => (
+            <Reveal key={c.title} delay={i * 100}>
+              <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
+                <GraduationCap className="mb-4 h-6 w-6 text-primary" />
+                <h3 className="text-lg font-bold text-card-foreground">{c.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{c.detail}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {skillGroups.map((group, i) => (
+            <Reveal key={group.title} delay={i * 100}>
+              <div className="h-full rounded-2xl border border-border/70 bg-secondary/40 p-6">
+                <h3 className="text-base font-bold text-foreground">{group.title}</h3>
+                <ul className="mt-4 space-y-2.5">
+                  {group.items.map((item) => (
+                    <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={150}>
+          <div className="mt-8 rounded-2xl border border-border/70 bg-card p-6">
+            <div className="mb-5 flex items-center gap-3">
+              <Languages className="h-5 w-5 text-primary" />
+              <h3 className="text-base font-bold text-card-foreground">Languages</h3>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {languages.map((l) => (
+                <div key={l.name} className="rounded-xl bg-secondary/50 px-4 py-3">
+                  <p className="font-semibold text-foreground">{l.name}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{l.level}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function Beyond() {
+  return (
+    <section id="beyond" className="section-padding relative overflow-hidden">
+      <div className="aurora bottom-0 left-0 h-80 w-80 bg-chart-2/30" />
+      <div className="container-tight relative grid gap-12 lg:grid-cols-2">
+        <div>
+          <Reveal>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Leadership</p>
+            <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">Leading before practising.</h2>
+          </Reveal>
+          <div className="mt-8 space-y-5 border-l-2 border-primary/20 pl-6">
+            {leadership.map((l, i) => (
+              <Reveal key={l.role} delay={i * 80}>
+                <div className="relative">
+                  <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-primary" />
+                  <p className="text-xs font-bold uppercase tracking-widest text-primary">{l.year}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-foreground">{l.role}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <Reveal>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              Training & Conferences
+            </p>
+            <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">Always in the room, learning.</h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <ul className="mt-8 space-y-3">
+              {training.map((t) => (
+                <li
+                  key={t.name}
+                  className="flex gap-4 rounded-xl border border-border/60 bg-card px-4 py-3 text-sm"
+                >
+                  <span className="font-bold text-primary">{t.year}</span>
+                  <span className="text-muted-foreground">{t.name}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Highlights() {
+
   return (
     <section id="highlights" className="section-padding relative overflow-hidden bg-secondary/40">
       <div className="dot-grid absolute top-10 right-10 hidden h-28 w-28 text-primary/30 md:block" />
