@@ -38,8 +38,12 @@ jobs:
       - name: Build static site
         run: bun run build
 
-      - name: Add SPA fallback and disable Jekyll
+      - name: Prepare static output
         run: |
+          if [ ! -d .output/public ]; then
+            mkdir -p .output
+            cp -r dist/client .output/public
+          fi
           cp .output/public/index.html .output/public/404.html
           touch .output/public/.nojekyll
 
