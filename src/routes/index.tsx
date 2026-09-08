@@ -370,7 +370,10 @@ function ChapterRail() {
   const points = [
     { id: "start", label: "Start" },
     ...chapters.map((c) => ({ id: c.id, label: c.label })),
-    { id: "highlights", label: "Highlights" },
+    { id: "credentials", label: "Credentials" },
+    { id: "highlights", label: "Awards" },
+    { id: "beyond", label: "Beyond" },
+
     { id: "contact", label: "Contact" },
   ];
 
