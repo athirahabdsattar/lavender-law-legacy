@@ -11,5 +11,19 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // Public pages rendered to static HTML at build time (GitHub Pages has no server).
+    pages: [{ path: "/" }],
+    prerender: {
+      enabled: true,
+      crawlLinks: true,
+    },
+  },
+  // Static hosting target: emits the finished site into .output/public
+  nitro: {
+    preset: "static",
+    output: {
+      dir: ".output",
+      publicDir: ".output/public",
+    },
   },
 });
