@@ -417,9 +417,9 @@ function Opening() {
           From litigation lawyer to <span className="gradient-text">healthcare startup builder</span>.
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          Seven years solving complex problems across law, healthcare and entrepreneurship. Six of them in
-          insurance civil litigation. Today I co-found DEGUP through PETRONAS SEEd.Lab, improving access to
-          dialysis care.
+          Called to the Malaysian Bar in 2019, with six years in personal injury and insurance litigation and
+          criminal legal aid. Today I co-found Degup through SEEd.Lab — powered by PETRONAS and TCS — improving
+          access to dialysis care.
         </p>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
           Law taught me how to think. Startups are teaching me how to build.
