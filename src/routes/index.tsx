@@ -351,7 +351,7 @@ function ChapterRail() {
   const [active, setActive] = useState("start");
 
   useEffect(() => {
-    const ids = ["start", ...chapters.map((c) => c.id), "highlights", "contact"];
+    const ids = ["start", ...chapters.map((c) => c.id), "credentials", "highlights", "beyond", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
