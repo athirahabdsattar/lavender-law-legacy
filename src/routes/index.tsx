@@ -252,8 +252,11 @@ function Index() {
         {chapters.map((chapter, i) => (
           <ChapterScene key={chapter.id} chapter={chapter} index={i} />
         ))}
+        <Credentials />
         <Highlights />
+        <Beyond />
         <Contact />
+
       </main>
       <Footer />
     </div>
