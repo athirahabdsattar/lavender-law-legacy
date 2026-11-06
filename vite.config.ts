@@ -12,7 +12,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
     // Public pages rendered to static HTML at build time (GitHub Pages has no server).
-    pages: [{ path: "/" }],
+    pages: [{ path: "/" }, { path: "/studio" }],
     prerender: {
       enabled: true,
       crawlLinks: true,
