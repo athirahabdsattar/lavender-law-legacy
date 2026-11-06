@@ -13,6 +13,8 @@ export type Credentials = {
   threadsUserId: string;
   threadsToken: string;
   tiktokToken: string;
+  /** Anthropic API key for the AI repurposing tab. */
+  anthropicKey: string;
 };
 
 export const EMPTY_CREDENTIALS: Credentials = {
@@ -24,6 +26,7 @@ export const EMPTY_CREDENTIALS: Credentials = {
   threadsUserId: "",
   threadsToken: "",
   tiktokToken: "",
+  anthropicKey: "",
 };
 
 export function isConnected(id: PlatformId, c: Credentials) {

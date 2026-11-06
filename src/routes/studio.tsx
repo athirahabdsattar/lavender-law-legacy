@@ -12,11 +12,14 @@ import {
   ShieldAlert,
   Sparkles,
   TrendingUp,
+  Wand2,
   TriangleAlert,
   XCircle,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
+import { EMPTY_REPURPOSE, Repurpose, type RepurposeState } from "@/components/studio/Repurpose";
+import type { OutputFormat, RepurposeResult } from "@/lib/social/repurpose";
 import {
   AUDIENCES,
   AUDIENCE_ORDER,
@@ -92,6 +95,7 @@ const STORAGE = {
   draft: "degup-studio:draft",
   creds: "degup-studio:creds",
   history: "degup-studio:history",
+  repurpose: "degup-studio:repurpose",
 };
 
 function load<T>(key: string, fallback: T): T {
@@ -131,6 +135,7 @@ const labelClass =
   "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground";
 
 function Studio() {
+  const [tab, setTab] = useState("compose");
   return (
     <div className="min-h-screen bg-secondary/40">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
@@ -164,11 +169,15 @@ function Studio() {
       </header>
 
       <main className="container-tight py-8">
-        <Tabs defaultValue="compose">
+        <Tabs value={tab} onValueChange={setTab}>
           <TabsList className="mb-6 h-auto flex-wrap justify-start gap-1 rounded-xl bg-background p-1 shadow-sm">
             <TabsTrigger value="compose" className="gap-2 rounded-lg px-4 py-2">
               <Send className="h-4 w-4" />
               Compose
+            </TabsTrigger>
+            <TabsTrigger value="repurpose" className="gap-2 rounded-lg px-4 py-2">
+              <Wand2 className="h-4 w-4" />
+              Repurpose content
             </TabsTrigger>
             <TabsTrigger value="grow" className="gap-2 rounded-lg px-4 py-2">
               <TrendingUp className="h-4 w-4" />
@@ -179,19 +188,48 @@ function Studio() {
               Accounts
             </TabsTrigger>
           </TabsList>
-          <StudioBody />
+          <StudioBody goTo={setTab} />
         </Tabs>
       </main>
     </div>
   );
 }
 
-function StudioBody() {
+function StudioBody({ goTo }: { goTo: (tab: string) => void }) {
   const [draft, setDraft] = usePersisted<Draft>(STORAGE.draft, EMPTY_DRAFT);
   const [creds, setCreds] = usePersisted<Credentials>(STORAGE.creds, EMPTY_CREDENTIALS);
   const [history, setHistory] = usePersisted<{ items: HistoryEntry[] }>(STORAGE.history, {
     items: [],
   });
+  const [repurpose, setRepurpose] = usePersisted<RepurposeState>(
+    STORAGE.repurpose,
+    EMPTY_REPURPOSE,
+  );
+
+  function sendToComposer(
+    result: RepurposeResult,
+    formats: OutputFormat[],
+    audience: Draft["audience"],
+  ) {
+    const overrides: Draft["overrides"] = {};
+    for (const o of result.outputs) {
+      const platform = formats.find((f) => f.id === o.format_id)?.platform;
+      if (platform && !overrides[platform]) overrides[platform] = o.text;
+    }
+    setDraft((d) => ({
+      ...d,
+      audience,
+      hook: result.hook,
+      body: result.body,
+      hashtags: result.hashtags.join(" "),
+      overrides,
+      enabled: Object.fromEntries(
+        PLATFORM_ORDER.map((id) => [id, overrides[id] !== undefined || d.enabled[id]]),
+      ) as Draft["enabled"],
+    }));
+    goTo("compose");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <>
@@ -202,6 +240,14 @@ function StudioBody() {
           creds={creds}
           history={history.items}
           onPublished={(e) => setHistory((h) => ({ items: [e, ...h.items].slice(0, 30) }))}
+        />
+      </TabsContent>
+      <TabsContent value="repurpose">
+        <Repurpose
+          state={repurpose}
+          setState={setRepurpose}
+          apiKey={creds.anthropicKey}
+          onSendToComposer={sendToComposer}
         />
       </TabsContent>
       <TabsContent value="grow">
@@ -820,6 +866,51 @@ function Accounts({
           </section>
         ))}
       </div>
+
+      <section className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="font-bold">AI repurposing (Anthropic)</h3>
+          <span
+            className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${creds.anthropicKey ? "bg-emerald-500/15 text-emerald-700" : "bg-muted text-muted-foreground"}`}
+          >
+            {creds.anthropicKey ? "Connected" : "Not connected"}
+          </span>
+        </div>
+        <label className={labelClass} htmlFor="anthropicKey">
+          Anthropic API key
+        </label>
+        <input
+          id="anthropicKey"
+          type="password"
+          autoComplete="off"
+          className={fieldClass}
+          value={creds.anthropicKey}
+          onChange={set("anthropicKey")}
+          placeholder="sk-ant-…"
+        />
+        <details className="mt-4 text-xs text-muted-foreground">
+          <summary className="cursor-pointer font-medium text-foreground/80">
+            How to get this
+          </summary>
+          <ol className="mt-2 list-decimal space-y-1 pl-4">
+            <li>Sign in at console.anthropic.com and add billing credit (pay as you go).</li>
+            <li>Go to API Keys → Create key, name it “DEGUP studio”, and paste it here.</li>
+            <li>
+              Set a monthly spend limit in the Console. Turning one piece of content into all
+              formats usually costs a few cents.
+            </li>
+          </ol>
+        </details>
+        {creds.anthropicKey && (
+          <button
+            type="button"
+            onClick={() => setCreds((c) => ({ ...c, anthropicKey: "" }))}
+            className="mt-4 text-xs font-medium text-destructive hover:underline"
+          >
+            Disconnect
+          </button>
+        )}
+      </section>
 
       <div className="max-w-xs">
         <label className={labelClass} htmlFor="graphVersion">
