@@ -8,6 +8,8 @@ import {
   Send,
   TriangleAlert,
   Wand2,
+  MessageSquare,
+  Copy,
   XCircle,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
@@ -31,6 +33,8 @@ import {
 } from "@/lib/social/publish";
 import {
   BUILT_IN_FORMATS,
+  buildChatPrompt,
+  parseChatReply,
   DEFAULT_BRAND_VOICE,
   LANGUAGES,
   RepurposeError,
@@ -82,7 +86,7 @@ const fieldClass =
 const labelClass =
   "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground";
 
-type Phase = "idle" | "generating" | "review" | "publishing" | "done";
+type Phase = "idle" | "chat" | "generating" | "review" | "publishing" | "done";
 
 export function AutoPost({
   state,
@@ -102,6 +106,10 @@ export function AutoPost({
   );
   const [opened, setOpened] = useState<Partial<Record<PlatformId, boolean>>>({});
   const [error, setError] = useState<string | null>(null);
+  // Free path: prompt for the regular Claude chat, and the reply pasted back.
+  const [chatPrompt, setChatPrompt] = useState<string | null>(null);
+  const [chatReply, setChatReply] = useState("");
+  const [promptCopied, setPromptCopied] = useState(false);
   const update = <K extends keyof AutoPostState>(k: K, v: AutoPostState[K]) =>
     setState((s) => ({ ...s, [k]: v }));
 
@@ -118,11 +126,7 @@ export function AutoPost({
   }, [captions, chosen, state.mediaType, state.mediaUrl]);
   const blocked = chosen.filter((id) => issues[id]?.some((i) => i.level === "error"));
 
-  async function generate() {
-    setError(null);
-    setResults({});
-    setOpened({});
-    setPhase("generating");
+  function buildRequest() {
     const formats = BUILT_IN_FORMATS.filter((f) => chosen.some((id) => FORMAT_FOR[id] === f.id));
     const req = {
       source: state.topic,
@@ -143,9 +147,71 @@ export function AutoPost({
         .filter(Boolean)
         .join(" "),
     };
+    return req;
+  }
+
+  /** Show the posts for review, or publish straight away when "Post without reviewing" is on. */
+  async function applyCaptions(next: Partial<Record<PlatformId, string>>) {
+    setCaptions(next);
+    const canAutoPublish =
+      state.skipReview &&
+      auto.length > 0 &&
+      !chosen.some((id) =>
+        validate(id, next[id] ?? "", state.mediaType, state.mediaUrl).some(
+          (i) => i.level === "error",
+        ),
+      );
+    if (canAutoPublish) await publish(next);
+    else setPhase("review");
+  }
+
+  async function startChat() {
+    setError(null);
+    setResults({});
+    setOpened({});
+    setChatReply("");
+    const prompt = buildChatPrompt(buildRequest());
+    setChatPrompt(prompt);
+    setPhase("chat");
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(prompt);
+      copied = true;
+    } catch {
+      /* clipboard blocked; the prompt is shown for manual copying */
+    }
+    setPromptCopied(copied);
+    window.open(`https://claude.ai/new?q=${encodeURIComponent(prompt)}`, "_blank", "noopener");
+  }
+
+  async function useChatReply() {
+    const parsed = parseChatReply(chatReply);
+    const next: Partial<Record<PlatformId, string>> = {};
+    for (const id of chosen) next[id] = parsed[FORMAT_FOR[id]] ?? "";
+    const missing = chosen.filter((id) => !next[id]);
+    if (missing.length === chosen.length) {
+      setError(
+        "Couldn't find the posts in that reply. Paste Claude's whole answer, including the [[…]] tag lines.",
+      );
+      return;
+    }
+    setError(
+      missing.length
+        ? `Claude's reply had nothing for ${missing.map((id) => PLATFORMS[id].name).join(", ")}. Write those yourself or ask Claude again.`
+        : null,
+    );
+    await applyCaptions(next);
+  }
+
+  async function generate(mode: "ai" | "quick" = hasKey ? "ai" : "quick") {
+    setError(null);
+    setResults({});
+    setOpened({});
+    setPhase("generating");
+    const req = buildRequest();
     try {
       const next: Partial<Record<PlatformId, string>> = {};
-      if (hasKey) {
+      if (mode === "ai") {
         const result = await repurposeWithClaude(creds.anthropicKey, req);
         for (const id of chosen) {
           next[id] = result.outputs.find((o) => o.format_id === FORMAT_FOR[id])?.text ?? "";
@@ -164,17 +230,7 @@ export function AutoPost({
           });
         }
       }
-      setCaptions(next);
-      const canAutoPublish =
-        state.skipReview &&
-        auto.length > 0 &&
-        !chosen.some((id) =>
-          validate(id, next[id] ?? "", state.mediaType, state.mediaUrl).some(
-            (i) => i.level === "error",
-          ),
-        );
-      if (canAutoPublish) await publish(next);
-      else setPhase("review");
+      await applyCaptions(next);
     } catch (err) {
       setError(
         err instanceof RepurposeError ? err.message : `Something went wrong: ${String(err)}`,
@@ -377,30 +433,52 @@ export function AutoPost({
           <Switch checked={state.skipReview} onCheckedChange={(v) => update("skipReview", v)} />
         </label>
 
-        <button
-          type="button"
-          disabled={!canGenerate}
-          onClick={generate}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {phase === "generating" ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : state.skipReview ? (
-            <Rocket className="h-4 w-4" />
-          ) : (
-            <Wand2 className="h-4 w-4" />
-          )}
-          {phase === "generating"
-            ? "Writing your posts…"
-            : state.skipReview
-              ? `Generate & post to ${chosen.length} platform${chosen.length === 1 ? "" : "s"}`
-              : "Generate posts"}
-        </button>
-        {!hasKey && (
-          <p className="text-xs text-muted-foreground">
-            No Anthropic key yet, so the posts are built from your own sentences. Add a key under
-            Accounts for AI-written posts.
-          </p>
+        {hasKey ? (
+          <button
+            type="button"
+            disabled={!canGenerate}
+            onClick={() => generate("ai")}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {phase === "generating" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : state.skipReview ? (
+              <Rocket className="h-4 w-4" />
+            ) : (
+              <Wand2 className="h-4 w-4" />
+            )}
+            {phase === "generating"
+              ? "Writing your posts…"
+              : state.skipReview
+                ? `Generate & post to ${chosen.length} platform${chosen.length === 1 ? "" : "s"}`
+                : "Generate posts"}
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              disabled={!canGenerate}
+              onClick={startChat}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <MessageSquare className="h-4 w-4" />
+              Write with Claude chat (free)
+            </button>
+            <button
+              type="button"
+              disabled={!canGenerate}
+              onClick={() => generate("quick")}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-semibold transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Wand2 className="h-4 w-4" />
+              Build from my own words (instant, no AI)
+            </button>
+            <p className="text-xs text-muted-foreground">
+              <strong>Claude chat</strong> opens claude.ai with your request ready. It works on the
+              free plan. Copy Claude's answer and paste it back here. <strong>Own words</strong>{" "}
+              rearranges your sentences for each platform without rewriting them.
+            </p>
+          </>
         )}
       </section>
 
@@ -421,6 +499,99 @@ export function AutoPost({
               <li>2. Generate: each platform gets its own version and tone</li>
               <li>3. Check them, then post everywhere with one button</li>
             </ol>
+          </div>
+        )}
+
+        {phase === "chat" && chatPrompt && (
+          <div className="space-y-4 rounded-2xl border border-primary/30 bg-background p-5 shadow-sm">
+            <div>
+              <h3 className="text-lg font-bold">Write your posts with Claude chat (free)</h3>
+              <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
+                <li>
+                  A new tab opened on claude.ai.{" "}
+                  {promptCopied
+                    ? "Your request is also copied, so if the message box is empty, paste it in."
+                    : "If the message box is empty, copy the request below and paste it in."}
+                </li>
+                <li>Send it and wait for Claude's answer.</li>
+                <li>
+                  Use the copy button under Claude's answer, come back here, and paste it into the
+                  box below.
+                </li>
+              </ol>
+            </div>
+            <details className="text-sm">
+              <summary className="cursor-pointer font-semibold text-primary">
+                Show the request (if you need to copy it by hand)
+              </summary>
+              <textarea
+                readOnly
+                value={chatPrompt}
+                rows={6}
+                onFocus={(e) => e.currentTarget.select()}
+                className="mt-2 w-full rounded-xl border border-input bg-secondary/40 p-3 text-xs"
+                aria-label="Request for Claude chat"
+              />
+              <div className="mt-2 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(chatPrompt);
+                      setPromptCopied(true);
+                    } catch {
+                      /* user can select the text above */
+                    }
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-semibold hover:bg-accent"
+                >
+                  <Copy className="h-3.5 w-3.5" /> Copy request
+                </button>
+                <a
+                  href="https://claude.ai/new"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-semibold hover:bg-accent"
+                >
+                  Open claude.ai again <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </details>
+            <div>
+              <label className={labelClass} htmlFor="ap-reply">
+                Paste Claude's answer here
+              </label>
+              <textarea
+                id="ap-reply"
+                rows={9}
+                className={fieldClass}
+                value={chatReply}
+                onChange={(e) => setChatReply(e.target.value)}
+                placeholder={"[[instagram_caption]]\n…\n\n[[facebook_post]]\n…"}
+              />
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                disabled={chatReply.trim().length < 20}
+                onClick={useChatReply}
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {state.skipReview ? (
+                  <Rocket className="h-4 w-4" />
+                ) : (
+                  <CheckCircle2 className="h-4 w-4" />
+                )}
+                {state.skipReview ? "Use these posts & publish" : "Use these posts"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setPhase("idle")}
+                className="rounded-xl border border-border px-4 py-2.5 text-sm font-semibold hover:bg-accent"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         )}
 
@@ -460,7 +631,7 @@ export function AutoPost({
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={generate}
+                  onClick={() => (hasKey ? generate("ai") : startChat())}
                   disabled={busy}
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border px-3.5 py-2.5 text-sm font-semibold transition hover:bg-accent disabled:opacity-50"
                 >

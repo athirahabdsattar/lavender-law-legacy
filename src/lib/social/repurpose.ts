@@ -136,6 +136,34 @@ Produce one output for each of these formats, using the same format_id:
 ${formats}`;
 }
 
+/**
+ * Free option: a prompt the user pastes into the regular Claude chat (claude.ai, free plan).
+ * The reply is pasted back and split by the [[format_id]] markers.
+ */
+export function buildChatPrompt(r: RepurposeRequest) {
+  const tags = r.formats.map((f) => `[[${f.id}]]`).join(", ");
+  return `${SYSTEM}
+
+${buildPrompt(r)}
+
+How to reply: write nothing except the posts. Put each post directly under a line that contains only its tag (${tags}), in that order. No titles, explanations or code blocks.`;
+}
+
+/** Split a pasted chat reply into posts, keyed by format id. */
+export function parseChatReply(text: string): Record<string, string> {
+  const out: Record<string, string> = {};
+  const cleaned = text.replace(/^```[a-z]*\s*$/gim, "");
+  const marker = /^[^\S\n]*[*#_\s]*\[\[([\w-]+)\]\][*_\s]*$/gm;
+  const hits = [...cleaned.matchAll(marker)];
+  hits.forEach((m, i) => {
+    const start = (m.index ?? 0) + m[0].length;
+    const end = hits[i + 1]?.index ?? cleaned.length;
+    const id = m[1];
+    if (id) out[id] = cleaned.slice(start, end).trim();
+  });
+  return out;
+}
+
 export class RepurposeError extends Error {}
 
 export async function repurposeWithClaude(

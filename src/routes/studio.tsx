@@ -959,13 +959,17 @@ function Accounts({
 
       <section className="rounded-2xl border border-border bg-background p-5 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-bold">AI repurposing (Anthropic)</h3>
+          <h3 className="font-bold">AI API key (optional, paid)</h3>
           <span
             className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${creds.anthropicKey ? "bg-emerald-500/15 text-emerald-700" : "bg-muted text-muted-foreground"}`}
           >
             {creds.anthropicKey ? "Connected" : "Not connected"}
           </span>
         </div>
+        <p className="mb-4 text-sm text-muted-foreground">
+          You don't need this. The free “Write with Claude chat” button in Auto-post does the same
+          job. A key only skips the copy and paste step, and it costs a few cents per run.
+        </p>
         <label className={labelClass} htmlFor="anthropicKey">
           Anthropic API key
         </label>
