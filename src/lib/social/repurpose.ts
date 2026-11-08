@@ -45,6 +45,13 @@ export const BUILT_IN_FORMATS: OutputFormat[] = [
       "Threads post. Conversational opinion or insight that invites replies. Max 450 characters. At most one topic tag at the end.",
   },
   {
+    id: "linkedin_post",
+    name: "LinkedIn post",
+    platform: "linkedin",
+    instructions:
+      "LinkedIn post in a professional founder voice, in English unless told otherwise. The first two lines must earn the “see more” click (an insight, lesson or number). Short lines with white space, a takeaway, then one question for the comments. Exactly 3 hashtags at the end. 600–1,300 characters.",
+  },
+  {
     id: "carousel",
     name: "Carousel slides",
     instructions:

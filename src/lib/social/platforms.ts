@@ -1,7 +1,7 @@
 // Platform rules + caption tailoring for the DEGUP social studio.
 // Everything here is pure (no network) so it can run in the browser and be prerendered.
 
-export type PlatformId = "instagram" | "facebook" | "tiktok" | "threads";
+export type PlatformId = "instagram" | "facebook" | "tiktok" | "threads" | "linkedin";
 export type MediaType = "none" | "image" | "video";
 
 export type Platform = {
@@ -79,9 +79,31 @@ export const PLATFORMS: Record<PlatformId, Platform> = {
       "500 characters max. The long version belongs on IG or Facebook.",
     ],
   },
+  linkedin: {
+    id: "linkedin",
+    name: "LinkedIn",
+    maxChars: 3000,
+    maxHashtags: 5,
+    idealHashtags: [3, 3],
+    clickableLinks: true,
+    requiresMedia: null,
+    color: "oklch(0.5 0.13 245)",
+    tips: [
+      "Where partners, clinicians, investors and corporates are. Write in a professional founder voice, in English.",
+      "The first 2 lines show before “…see more”, so open with an insight or a number.",
+      "Short lines with white space. Tell a lesson from the build, then ask a question.",
+      "About 3 hashtags. Posting links can reduce reach, so consider putting the link in a comment.",
+    ],
+  },
 };
 
-export const PLATFORM_ORDER: PlatformId[] = ["instagram", "facebook", "tiktok", "threads"];
+export const PLATFORM_ORDER: PlatformId[] = [
+  "instagram",
+  "facebook",
+  "tiktok",
+  "threads",
+  "linkedin",
+];
 
 export type AudienceId = "patients" | "caregivers" | "providers" | "ecosystem" | "public";
 
@@ -106,6 +128,8 @@ export const AUDIENCES: Record<AudienceId, Audience> = {
       facebook: "Perlukan bantuan cari slot dialisis? Komen “SLOT” atau mesej kami terus. 💜",
       tiktok: "Follow @degup.my untuk tips dialisis setiap minggu 💜",
       threads: "Ada pengalaman cari slot dialisis? Kongsi di bawah 👇",
+      linkedin:
+        "We help dialysis patients across Malaysia find treatment slots. If you work with patients who travel, let's connect.",
     },
   },
   caregivers: {
@@ -120,6 +144,8 @@ export const AUDIENCES: Record<AudienceId, Audience> = {
         "Tag ahli keluarga yang sedang menjaga pesakit dialisis. Mereka tak keseorangan. 💜",
       tiktok: "Share dengan adik-beradik yang jaga mak ayah 💜",
       threads: "Penjaga pesakit dialisis, apa yang paling susah bagi anda?",
+      linkedin:
+        "Many of us are quietly caring for a parent on dialysis while working full-time. Employers, how do you support caregivers on your team?",
     },
   },
   providers: {
@@ -135,6 +161,8 @@ export const AUDIENCES: Record<AudienceId, Audience> = {
         "Dialysis centre operators: let's talk about filling empty slots. Message us to partner.",
       tiktok: "Centre owners, follow for more on patient referrals 🩺",
       threads: "Clinicians: what's the biggest bottleneck in dialysis referrals today?",
+      linkedin:
+        "Dialysis centre operators and nephrologists: we're partnering with centres to fill unused slots. Message me to explore a pilot.",
     },
   },
   ecosystem: {
@@ -149,6 +177,8 @@ export const AUDIENCES: Record<AudienceId, Audience> = {
         "We're building in public. Follow DEGUP for the journey, and reach out if you'd like to collaborate.",
       tiktok: "Follow the build: lawyer to healthtech founder 🚀",
       threads: "Founders in healthtech: what would you do differently in year one?",
+      linkedin:
+        "Building in public with SEEd.Lab (PETRONAS & TCS). Follow along, and reach out if you'd like to collaborate.",
     },
   },
   public: {
@@ -162,6 +192,7 @@ export const AUDIENCES: Record<AudienceId, Audience> = {
       facebook: "Kongsikan supaya lebih ramai tahu. Pencegahan lebih baik daripada rawatan. 💜",
       tiktok: "Share dengan family yang ada diabetes / darah tinggi 💜",
       threads: "Did you know diabetes is the top cause of kidney failure in Malaysia?",
+      linkedin: "Kidney health is workplace health. Share this with your HR or wellness team.",
     },
   },
 };
@@ -276,6 +307,11 @@ export function tailorCaption(platformId: PlatformId, input: ComposeInput): stri
         Math.max(budget, 80),
       );
       return [main, tail].filter(Boolean).join("\n\n").slice(0, platform.maxChars);
+    }
+    case "linkedin": {
+      // LinkedIn: insight-led, short lines, link inline, ~3 hashtags at the end.
+      const parts = [hook, body, cta, link, tags.slice(0, 3).join(" ")];
+      return truncate(parts.filter(Boolean).join("\n\n"), platform.maxChars);
     }
   }
 }

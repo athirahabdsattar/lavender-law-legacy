@@ -12,12 +12,14 @@ import {
   ShieldAlert,
   Sparkles,
   TrendingUp,
+  Rocket,
   Wand2,
   TriangleAlert,
   XCircle,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
+import { AutoPost, EMPTY_AUTOPOST, type AutoPostState } from "@/components/studio/AutoPost";
 import { EMPTY_REPURPOSE, Repurpose, type RepurposeState } from "@/components/studio/Repurpose";
 import type { OutputFormat, RepurposeResult } from "@/lib/social/repurpose";
 import {
@@ -35,7 +37,7 @@ import {
 } from "@/lib/social/platforms";
 import {
   EMPTY_CREDENTIALS,
-  UPLOAD_URLS,
+  manualPostUrl,
   isConnected,
   publishTo,
   type Credentials,
@@ -51,7 +53,7 @@ export const Route = createFileRoute("/studio")({
       {
         name: "description",
         content:
-          "Write once, tailor per audience, and post to Instagram, Facebook, TikTok and Threads.",
+          "Generate once, tailor per audience, and post to Instagram, Facebook, TikTok, Threads and LinkedIn.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],
@@ -87,7 +89,7 @@ const EMPTY_DRAFT: Draft = {
   includeCta: true,
   mediaType: "image",
   mediaUrl: "",
-  enabled: { instagram: true, facebook: true, tiktok: false, threads: true },
+  enabled: { instagram: true, facebook: true, tiktok: false, threads: true, linkedin: true },
   overrides: {},
 };
 
@@ -96,6 +98,7 @@ const STORAGE = {
   creds: "degup-studio:creds",
   history: "degup-studio:history",
   repurpose: "degup-studio:repurpose",
+  autopost: "degup-studio:autopost",
 };
 
 function load<T>(key: string, fallback: T): T {
@@ -135,7 +138,7 @@ const labelClass =
   "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground";
 
 function Studio() {
-  const [tab, setTab] = useState("compose");
+  const [tab, setTab] = useState("autopost");
   return (
     <div className="min-h-screen bg-secondary/40">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
@@ -153,7 +156,7 @@ function Studio() {
                 DEGUP Social Studio
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                Write once and post to Instagram, Facebook, TikTok and Threads
+                Generate once and post to Instagram, Facebook, TikTok, Threads and LinkedIn
               </p>
             </div>
           </div>
@@ -171,6 +174,10 @@ function Studio() {
       <main className="container-tight py-8">
         <Tabs value={tab} onValueChange={setTab}>
           <TabsList className="mb-6 h-auto flex-wrap justify-start gap-1 rounded-xl bg-background p-1 shadow-sm">
+            <TabsTrigger value="autopost" className="gap-2 rounded-lg px-4 py-2">
+              <Rocket className="h-4 w-4" />
+              Auto-post
+            </TabsTrigger>
             <TabsTrigger value="compose" className="gap-2 rounded-lg px-4 py-2">
               <Send className="h-4 w-4" />
               Compose
@@ -201,6 +208,9 @@ function StudioBody({ goTo }: { goTo: (tab: string) => void }) {
   const [history, setHistory] = usePersisted<{ items: HistoryEntry[] }>(STORAGE.history, {
     items: [],
   });
+  const [autopost, setAutopost] = usePersisted<AutoPostState>(STORAGE.autopost, EMPTY_AUTOPOST);
+  const addHistory = (e: HistoryEntry) =>
+    setHistory((h) => ({ items: [e, ...h.items].slice(0, 30) }));
   const [repurpose, setRepurpose] = usePersisted<RepurposeState>(
     STORAGE.repurpose,
     EMPTY_REPURPOSE,
@@ -233,6 +243,9 @@ function StudioBody({ goTo }: { goTo: (tab: string) => void }) {
 
   return (
     <>
+      <TabsContent value="autopost">
+        <AutoPost state={autopost} setState={setAutopost} creds={creds} onPublished={addHistory} />
+      </TabsContent>
       <TabsContent value="compose">
         <Composer
           draft={draft}
@@ -343,7 +356,7 @@ function Composer({
     } catch {
       /* clipboard blocked; the caption is still selectable in the box */
     }
-    window.open(UPLOAD_URLS[id], "_blank", "noopener");
+    window.open(manualPostUrl(id, captions[id]), "_blank", "noopener");
   }
 
   const audience = AUDIENCES[draft.audience];
@@ -489,7 +502,7 @@ function Composer({
             <PlatformCard
               key={id}
               id={id}
-              enabled={draft.enabled[id]}
+              enabled={Boolean(draft.enabled[id])}
               onToggle={(v) => setDraft((d) => ({ ...d, enabled: { ...d.enabled, [id]: v } }))}
               caption={captions[id]}
               overridden={draft.overrides[id] !== undefined}
@@ -526,7 +539,7 @@ function Composer({
                 <p className="text-muted-foreground">
                   {notConnected.map((id) => PLATFORMS[id].name).join(", ")}{" "}
                   {notConnected.length > 1 ? "aren't" : "isn't"} connected. Add tokens under
-                  Accounts, or use “Copy & open”.
+                  Accounts, or use “Open & post”.
                 </p>
               )}
               {canPublish && (
@@ -712,7 +725,7 @@ function PlatformCard(props: {
         ) : (
           <Copy className="h-3.5 w-3.5" />
         )}
-        {props.copied ? "Copied!" : "Copy & open"} <ExternalLink className="h-3 w-3 opacity-60" />
+        {props.copied ? "Copied!" : "Open & post"} <ExternalLink className="h-3 w-3 opacity-60" />
       </button>
 
       <details className="mt-3 text-xs text-muted-foreground">
@@ -792,7 +805,22 @@ function Accounts({
         "Create an app at developers.tiktok.com and add Content Posting API with the Direct Post option.",
         "Verify the domain that hosts your videos (required for PULL_FROM_URL).",
         "Until TikTok audits the app, posts go up as private and you make them public in the app.",
-        "TikTok's API may block direct browser calls (CORS). If that happens, “Copy & open” still works.",
+        "TikTok blocks direct browser calls, so add your relay below for automatic posting. Without it, use “Open & post”.",
+      ],
+    },
+    {
+      id: "linkedin",
+      title: "LinkedIn",
+      fields: [
+        { key: "linkedinToken", label: "Access token (w_member_social)", secret: true },
+        { key: "linkedinAuthor", label: "Author URN (optional, e.g. urn:li:organization:123)" },
+        { key: "linkedinVersion", label: "LinkedIn API version (YYYYMM)" },
+      ],
+      how: [
+        "Create an app at linkedin.com/developers and add the “Share on LinkedIn” and “Sign In with LinkedIn using OpenID Connect” products.",
+        "Under Auth → OAuth 2.0 tools, generate a token with the openid, profile and w_member_social scopes. It lasts 60 days.",
+        "Leave Author URN empty to post as yourself. Posting as the DEGUP company page needs the Community Management API (LinkedIn must approve it) and urn:li:organization:<page id>.",
+        "LinkedIn blocks direct browser calls, so automatic posting needs the relay below. Without it, “Open & post” opens LinkedIn with your post already typed in.",
       ],
     },
   ];
@@ -803,8 +831,9 @@ function Accounts({
         <ShieldAlert className="h-5 w-5 shrink-0 text-amber-700" />
         <p>
           Tokens are saved <strong>only in this browser</strong> (localStorage) and sent straight to
-          Meta and TikTok. They never go to this website's server, and it doesn't have one. Use this
-          on your own device only, and click “Disconnect” on shared computers.
+          Meta, or through your own relay to LinkedIn and TikTok. They never go to this website's
+          server, and it doesn't have one. Use this on your own device only, and click “Disconnect”
+          on shared computers.
         </p>
       </div>
 
@@ -866,6 +895,67 @@ function Accounts({
           </section>
         ))}
       </div>
+
+      <section className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="font-bold">Relay for LinkedIn & TikTok</h3>
+          <span
+            className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${creds.relayUrl ? "bg-emerald-500/15 text-emerald-700" : "bg-muted text-muted-foreground"}`}
+          >
+            {creds.relayUrl ? "Set up" : "Not set up"}
+          </span>
+        </div>
+        <p className="mb-4 text-sm text-muted-foreground">
+          LinkedIn and TikTok don't accept posts sent straight from a web page. A relay is a tiny
+          free program you run on your own Cloudflare account. It passes your posts along and
+          doesn't store anything.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <label className={labelClass} htmlFor="relayUrl">
+              Relay URL
+            </label>
+            <input
+              id="relayUrl"
+              className={fieldClass}
+              value={creds.relayUrl}
+              onChange={set("relayUrl")}
+              placeholder="https://degup-relay.yourname.workers.dev"
+            />
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="relaySecret">
+              Relay secret
+            </label>
+            <input
+              id="relaySecret"
+              type="password"
+              autoComplete="off"
+              className={fieldClass}
+              value={creds.relaySecret}
+              onChange={set("relaySecret")}
+            />
+          </div>
+        </div>
+        <details className="mt-4 text-xs text-muted-foreground">
+          <summary className="cursor-pointer font-medium text-foreground/80">
+            How to set it up (about 5 minutes, free)
+          </summary>
+          <ol className="mt-2 list-decimal space-y-1 pl-4">
+            <li>Create a free account at dash.cloudflare.com.</li>
+            <li>Workers & Pages → Create → Worker. Name it “degup-relay”, then Deploy.</li>
+            <li>
+              Edit code, replace everything with the contents of relay/worker.js from this project,
+              then Deploy.
+            </li>
+            <li>
+              Settings → Variables and Secrets → add a Secret named RELAY_SECRET with a long random
+              password.
+            </li>
+            <li>Paste the worker's URL and that same password here.</li>
+          </ol>
+        </details>
+      </section>
 
       <section className="rounded-2xl border border-border bg-background p-5 shadow-sm">
         <div className="mb-4 flex items-center justify-between">

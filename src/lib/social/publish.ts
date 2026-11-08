@@ -1,6 +1,7 @@
 // Browser-side publishing to the official platform APIs.
-// The site is statically hosted (no server), so tokens live only in this browser's localStorage
-// and requests go straight from the browser to each platform.
+// The site is statically hosted (no server), so tokens live only in this browser's localStorage.
+// Meta (Facebook, Instagram, Threads) accept calls straight from the browser. LinkedIn and TikTok
+// don't allow browser calls (CORS), so those go through the user's own tiny relay (see /relay).
 
 import type { MediaType, PlatformId } from "./platforms";
 
@@ -13,6 +14,13 @@ export type Credentials = {
   threadsUserId: string;
   threadsToken: string;
   tiktokToken: string;
+  linkedinToken: string;
+  /** urn:li:person:… or urn:li:organization:…; detected from the token when empty. */
+  linkedinAuthor: string;
+  linkedinVersion: string;
+  /** URL of the user's deployed relay (Cloudflare Worker) for LinkedIn / TikTok. */
+  relayUrl: string;
+  relaySecret: string;
   /** Anthropic API key for the AI repurposing tab. */
   anthropicKey: string;
 };
@@ -26,6 +34,11 @@ export const EMPTY_CREDENTIALS: Credentials = {
   threadsUserId: "",
   threadsToken: "",
   tiktokToken: "",
+  linkedinToken: "",
+  linkedinAuthor: "",
+  linkedinVersion: "202610",
+  relayUrl: "",
+  relaySecret: "",
   anthropicKey: "",
 };
 
@@ -39,7 +52,20 @@ export function isConnected(id: PlatformId, c: Credentials) {
       return Boolean(c.threadsUserId && c.threadsToken);
     case "tiktok":
       return Boolean(c.tiktokToken);
+    case "linkedin":
+      return Boolean(c.linkedinToken && c.relayUrl);
   }
+}
+
+/** Fetch through the user's relay when one is configured (needed for hosts without CORS). */
+function relayFetch(c: Credentials, url: string, init: RequestInit = {}) {
+  if (!c.relayUrl) return fetch(url, init);
+  const headers = new Headers(init.headers);
+  headers.set("x-relay-secret", c.relaySecret);
+  return fetch(`${c.relayUrl.replace(/\/$/, "")}/?url=${encodeURIComponent(url)}`, {
+    ...init,
+    headers,
+  });
 }
 
 export type PublishRequest = {
@@ -175,17 +201,21 @@ async function publishTikTok(c: Credentials, r: PublishRequest): Promise<Publish
   };
   // TikTok requires the privacy level to be one the creator account allows.
   // Unaudited apps can only post SELF_ONLY (private); the post can be made public in the app.
-  const infoRes = await fetch("https://open.tiktokapis.com/v2/post/publish/creator_info/query/", {
-    method: "POST",
-    headers,
-  });
+  const infoRes = await relayFetch(
+    c,
+    "https://open.tiktokapis.com/v2/post/publish/creator_info/query/",
+    {
+      method: "POST",
+      headers,
+    },
+  );
   const info = await infoRes.json();
   if (info.error?.code && info.error.code !== "ok")
     throw new Error(info.error.message || info.error.code);
   const options: string[] = info.data?.privacy_level_options ?? ["SELF_ONLY"];
   const privacy = options.includes("PUBLIC_TO_EVERYONE") ? "PUBLIC_TO_EVERYONE" : options[0];
 
-  const res = await fetch("https://open.tiktokapis.com/v2/post/publish/video/init/", {
+  const res = await relayFetch(c, "https://open.tiktokapis.com/v2/post/publish/video/init/", {
     method: "POST",
     headers,
     body: JSON.stringify({
@@ -213,6 +243,98 @@ async function publishTikTok(c: Credentials, r: PublishRequest): Promise<Publish
   };
 }
 
+/** LinkedIn "little text": these characters must be backslash-escaped or the post is rejected. */
+function escapeLittleText(text: string) {
+  const escape = (t: string) => t.replace(/[\\|{}@[\]()<>#*_~]/g, "\\$&");
+  // Odd parts are #hashtags: send them as real, clickable LinkedIn hashtags.
+  return text
+    .split(/(#[\p{L}\p{N}_]+)/u)
+    .map((part, i) => (i % 2 ? `{hashtag|\\#|${escape(part.slice(1))}}` : escape(part)))
+    .join("");
+}
+
+async function publishLinkedIn(c: Credentials, r: PublishRequest): Promise<PublishResult> {
+  if (!c.relayUrl)
+    throw new Error("LinkedIn needs your relay URL (see Accounts). Use “Open & post” meanwhile.");
+  const headers = {
+    Authorization: `Bearer ${c.linkedinToken}`,
+    "LinkedIn-Version": c.linkedinVersion,
+    "X-Restli-Protocol-Version": "2.0.0",
+    "Content-Type": "application/json",
+  };
+  const fail = async (res: Response, step: string) => {
+    const body = (await res.json().catch(() => ({}))) as { message?: string };
+    return new Error(
+      `LinkedIn ${step} failed (HTTP ${res.status})${body.message ? `: ${body.message}` : ""}`,
+    );
+  };
+
+  let author = c.linkedinAuthor.trim();
+  if (!author) {
+    const me = await relayFetch(c, "https://api.linkedin.com/v2/userinfo", {
+      headers: { Authorization: headers.Authorization },
+    });
+    if (!me.ok) throw await fail(me, "profile lookup");
+    const info = (await me.json()) as { sub?: string };
+    if (!info.sub)
+      throw new Error(
+        "Couldn't read your LinkedIn member ID. Paste your author URN under Accounts.",
+      );
+    author = `urn:li:person:${info.sub}`;
+  }
+
+  let content: Record<string, unknown> | undefined;
+  let note: string | undefined;
+  if (r.mediaType === "image") {
+    const init = await relayFetch(
+      c,
+      "https://api.linkedin.com/rest/images?action=initializeUpload",
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ initializeUploadRequest: { owner: author } }),
+      },
+    );
+    if (!init.ok) throw await fail(init, "image upload setup");
+    const { value } = (await init.json()) as { value: { uploadUrl: string; image: string } };
+    const media = await relayFetch(c, r.mediaUrl);
+    if (!media.ok) throw new Error(`Couldn't download the image (HTTP ${media.status}).`);
+    const put = await relayFetch(c, value.uploadUrl, {
+      method: "PUT",
+      headers: { Authorization: headers.Authorization },
+      body: await media.blob(),
+    });
+    if (!put.ok) throw await fail(put, "image upload");
+    content = { media: { id: value.image } };
+  } else if (r.link) {
+    content = {
+      article: { source: r.link, title: r.caption.split("\n")[0]?.slice(0, 200) || r.link },
+    };
+  } else if (r.mediaType === "video") {
+    note = "Posted as text. Upload the video to LinkedIn by hand if you want it there.";
+  }
+
+  const res = await relayFetch(c, "https://api.linkedin.com/rest/posts", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      author,
+      commentary: escapeLittleText(r.caption),
+      visibility: "PUBLIC",
+      distribution: {
+        feedDistribution: "MAIN_FEED",
+        targetEntities: [],
+        thirdPartyDistributionChannels: [],
+      },
+      lifecycleState: "PUBLISHED",
+      isReshareDisabledByAuthor: false,
+      ...(content ? { content } : {}),
+    }),
+  });
+  if (!res.ok) throw await fail(res, "post");
+  return { ok: true, id: res.headers.get("x-restli-id") ?? "", ...(note ? { note } : {}) };
+}
+
 const PUBLISHERS: Record<
   PlatformId,
   (c: Credentials, r: PublishRequest) => Promise<PublishResult>
@@ -221,6 +343,7 @@ const PUBLISHERS: Record<
   instagram: publishInstagram,
   threads: publishThreads,
   tiktok: publishTikTok,
+  linkedin: publishLinkedIn,
 };
 
 export async function publishTo(
@@ -235,16 +358,26 @@ export async function publishTo(
     if (err instanceof TypeError) {
       return {
         ok: false,
-        error: `The browser couldn't reach ${id} (${message}). This is usually CORS or a network block. Use “Copy & open” instead.`,
+        error: `The browser couldn't reach ${id} (${message}). This is usually CORS or a network block. Use “Open & post” instead.`,
       };
     }
     return { ok: false, error: message };
   }
 }
 
-export const UPLOAD_URLS: Record<PlatformId, string> = {
-  instagram: "https://www.instagram.com/",
-  facebook: "https://www.facebook.com/",
-  tiktok: "https://www.tiktok.com/tiktokstudio/upload",
-  threads: "https://www.threads.net/",
-};
+/** Where to post by hand. LinkedIn and Threads open with the caption already filled in. */
+export function manualPostUrl(id: PlatformId, caption: string) {
+  const text = encodeURIComponent(caption);
+  switch (id) {
+    case "linkedin":
+      return `https://www.linkedin.com/feed/?shareActive=true&text=${text}`;
+    case "threads":
+      return `https://www.threads.net/intent/post?text=${text}`;
+    case "instagram":
+      return "https://www.instagram.com/";
+    case "facebook":
+      return "https://www.facebook.com/";
+    case "tiktok":
+      return "https://www.tiktok.com/tiktokstudio/upload";
+  }
+}

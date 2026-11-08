@@ -49,6 +49,7 @@ export const EMPTY_REPURPOSE: RepurposeState = {
     "facebook_post",
     "tiktok_caption",
     "threads_post",
+    "linkedin_post",
     "carousel",
     "reel_script",
   ],
